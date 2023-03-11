@@ -1,0 +1,43 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "extends": [
+    "plugin:vue/vue3-essential",
+    "plugin:vue/vue3-strongly-recommended",
+    "plugin:vue/vue3-recommended",
+    "@vue/typescript/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2022
+  },
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": ["error"],
+    "@typescript-eslint/ban-types": [
+      1,
+      {
+        "types": {
+          "Ref": "Use ref<type>",
+          "ComputedRef": "Use computed<type>"
+        }
+      }
+    ],
+    "max-depth": [
+      2,
+      {
+        "max": 3
+      }
+    ],
+    "max-lines-per-function": [
+      2,
+      {
+        "max": 220
+      }
+    ],
+    "semi": ["error", "never"],
+    "quotes": ["error", "single"],
+    "@typescript-eslint/semi": "off"
+  }
+}
