@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* COLORS */
+:root {
+  --main: #3d5368;
+}
+
+#app {
+  display: flex;
+  justify-content: center;
+}
