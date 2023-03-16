@@ -3,7 +3,9 @@ import CreateAccountView from './components/CreateAccountView.vue'
 </script>
 
 <template>
-  <CreateAccountView />
+  <div class="flex justify-center">
+    <CreateAccountView />
+  </div>
 </template>
 
 <style scoped></style>

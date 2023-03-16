@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 const username = ref<string>('')
-const handleStartGame = (e: Event, user: string): string => {
-  e.preventDefault()
+const handleStartGame = (user: string): string => {
   console.log(user)
   return user
 }
@@ -16,7 +15,7 @@ const handleStartGame = (e: Event, user: string): string => {
     >
     <form
       class="relative flex flex-col gap-4"
-      @click="handleStartGame($event, username)"
+      @click.prevent="handleStartGame(username)"
     >
       <input
         id="username_input"
