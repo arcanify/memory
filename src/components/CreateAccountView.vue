@@ -1,5 +1,15 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { db } from '@/firebase'
+import { collection, getDocs } from 'firebase/firestore'
+
+const getUser = async(): Promise<void> => {  
+  const querySnapshot = await getDocs(collection(db, 'test'))
+  querySnapshot.forEach((doc) => {
+    console.log(doc.id, ' => ', doc.data())
+  })
+}
+
 const username = ref<string>('')
 const handleStartGame = (user: string): string => {
   console.log(user)
@@ -15,7 +25,7 @@ const handleStartGame = (user: string): string => {
     >
     <form
       class="relative flex flex-col gap-4"
-      @click.prevent="handleStartGame(username)"
+      @submit.prevent="handleStartGame(username)"
     >
       <input
         id="username_input"
@@ -33,6 +43,12 @@ const handleStartGame = (user: string): string => {
         type="submit"
       >
         Start Game
+      </button>
+      <button
+        class="w-7/8 h-14 bg-[var(--main)] text-white rounded"
+        type="button" @click="getUser"
+      >
+        Test firebase
       </button>
     </form>
     <p>{{ username }}</p>
