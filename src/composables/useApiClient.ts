@@ -14,13 +14,13 @@ interface UseApiClient {
 
 export const useApiClient = (): UseApiClient => {
   const user = ref<User | null>(null)
-  const card = ref<Card | null>(null)  
-  
-    const createUser = (user: string): void => {
-      addDoc(collection(db, 'user'), {
-        username: user,
-      })
-    }
+  const card = ref<Card | null>(null)
+
+  const createUser = (user: string): void => {
+    addDoc(collection(db, 'user'), {
+      username: user,
+    })
+  }
 
   const getUser = async (): Promise<User | null> => {
     const docRef = doc(db, 'user', 'ZT3M02YeS43ha9ZXhCc2')

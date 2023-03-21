@@ -42,13 +42,15 @@ const handleStartGame = (user: string): string => {
       </button>
       <button
         class="w-7/8 h-14 bg-[var(--main)] text-white rounded"
-        type="button" @click="getUser()"
+        type="button"
+        @click="getUser()"
       >
         Test get user 'wojtek'
       </button>
       <button
         class="w-7/8 h-14 bg-[var(--main)] text-white rounded"
-        type="button" @click="getCard()"
+        type="button"
+        @click="getCard()"
       >
         Test get card 'witcher'
       </button>
