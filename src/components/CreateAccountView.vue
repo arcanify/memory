@@ -2,6 +2,9 @@
 import { ref } from 'vue'
 import { db } from '@/firebase'
 import { collection, getDocs } from 'firebase/firestore'
+import { useApiClient } from '../composables/useApiClient' 
+
+const {user, createUser} = useApiClient()
 
 const getUser = async(): Promise<void> => {  
   const querySnapshot = await getDocs(collection(db, 'test'))
@@ -12,7 +15,9 @@ const getUser = async(): Promise<void> => {
 
 const username = ref<string>('')
 const handleStartGame = (user: string): string => {
-  console.log(user)
+  createUser(user)
+  console.log(`User created: ${user}`)
+  
   return user
 }
 </script>
@@ -46,7 +51,7 @@ const handleStartGame = (user: string): string => {
       </button>
       <button
         class="w-7/8 h-14 bg-[var(--main)] text-white rounded"
-        type="button" @click="getUser"
+        type="button" @click="createUser(username)"
       >
         Test firebase
       </button>
