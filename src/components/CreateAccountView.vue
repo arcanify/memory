@@ -2,26 +2,20 @@
 import { ref } from 'vue'
 import { useApiClient } from '@/composables/useApiClient' 
 
-const {getUser, getCard, createUser} = useApiClient()
+const { getUser, getCard, createUser } = useApiClient()
 
 const username = ref<string>('')
-const handleStartGame = (user: string): string => {
-  createUser(user)
-  console.log(`User created: ${user}`)
-  
-  return user
-}
 </script>
 
 <template>
   <div class="container flex flex-col gap-16 items-center mt-44 w-full">
     <img
       class="w-5/8"
-      src="../assets/logo.png"
+      src="@/assets/logo.png"
     >
     <form
       class="relative flex flex-col gap-4"
-      @submit.prevent="handleStartGame(username)"
+      @submit.prevent="createUser(username)"
     >
       <input
         id="username_input"
@@ -43,14 +37,14 @@ const handleStartGame = (user: string): string => {
       <button
         class="w-7/8 h-14 bg-[var(--main)] text-white rounded"
         type="button"
-        @click="getUser()"
+        @click="getUser"
       >
         Test get user 'wojtek'
       </button>
       <button
         class="w-7/8 h-14 bg-[var(--main)] text-white rounded"
         type="button"
-        @click="getCard()"
+        @click="getCard"
       >
         Test get card 'witcher'
       </button>

@@ -16,10 +16,11 @@ export const useApiClient = (): UseApiClient => {
   const user = ref<User | null>(null)
   const card = ref<Card | null>(null)
 
-  const createUser = (user: string): void => {
+  const createUser = (username: string): void => {
     addDoc(collection(db, 'user'), {
-      username: user,
+      username,
     })
+    console.log(`User ${username} created`)
   }
 
   const getUser = async (): Promise<User | null> => {
