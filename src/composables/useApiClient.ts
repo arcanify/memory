@@ -1,49 +1,65 @@
 import { ref, Ref } from 'vue'
-// import axios from 'axios'
-import { User, Card } from '@/types'
+import { User, Category, Views, Collections } from '@/types'
+import { useRouter } from 'vue-router'
 import { db } from '@/firebase'
-import { collection, addDoc, doc, getDoc } from 'firebase/firestore'
+import { collection, addDoc, doc, getDoc, getDocs } from 'firebase/firestore'
 
 interface UseApiClient {
   user: Ref<User | null>
-  card: Ref<Card | null>
+  category: Ref<Category | null>
+  categories: Ref<string[] | null>
   createUser: (user: string) => void
   getUser: () => Promise<User | null>
-  getCard: () => Promise<Card | null>
+  getCategory: (id: string) => Promise<Category | null>
+  getAllCategoriesIds: () => Promise<string[] | null>
 }
 
 export const useApiClient = (): UseApiClient => {
   const user = ref<User | null>(null)
-  const card = ref<Card | null>(null)
+  const category = ref<Category | null>(null)
+  const categories = ref<string[] | null>([])
+  const router = useRouter()
 
   const createUser = (username: string): void => {
-    addDoc(collection(db, 'user'), {
+    addDoc(collection(db, Collections.USER), {
       username,
     })
-    console.log(`User ${username} created`)
+    router.push({
+      name: Views.SELECT_GAME,
+    })
   }
 
   const getUser = async (): Promise<User | null> => {
-    const docRef = doc(db, 'user', 'ZT3M02YeS43ha9ZXhCc2')
+    const docRef = doc(db, Collections.USER, 'ZT3M02YeS43ha9ZXhCc2')
     const docSnapshot = await getDoc(docRef)
     user.value = docSnapshot.data() as User
     console.log(user.value)
     return user.value
   }
 
-  const getCard = async (): Promise<Card | null> => {
-    const docRef = doc(db, 'card', 'WCkOGebRM668mTGz9mbH')
+  const getCategory = async (id: string): Promise<Category | null> => {
+    const docRef = doc(db, Collections.CARD, id)
     const docSnapshot = await getDoc(docRef)
-    card.value = docSnapshot.data() as Card
-    console.log(card.value)
-    return card.value
+    category.value = docSnapshot.data() as Category
+    return category.value
+  }
+
+  const getAllCategoriesIds = async (): Promise<string[] | null> => {
+    const querySnapshot = await getDocs(collection(db, Collections.CARD))
+    querySnapshot.forEach((doc) => {
+      const data = doc.id
+      categories.value?.push(data)
+    })
+    return categories.value
   }
 
   return {
     user,
-    card,
+    category,
+    categories,
     createUser,
     getUser,
-    getCard,
+    getCategory,
+    getAllCategoriesIds
   }
 }

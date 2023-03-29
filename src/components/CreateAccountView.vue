@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useApiClient } from '@/composables/useApiClient' 
 
-const { getUser, getCard, createUser } = useApiClient()
+const { getUser, createUser } = useApiClient()
 
 const username = ref<string>('')
 </script>
@@ -40,13 +40,6 @@ const username = ref<string>('')
         @click="getUser"
       >
         Test get user 'wojtek'
-      </button>
-      <button
-        class="w-7/8 h-14 bg-[var(--main)] text-white rounded"
-        type="button"
-        @click="getCard"
-      >
-        Test get card 'witcher'
       </button>
     </form>
     <p>{{ username }}</p>

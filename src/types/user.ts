@@ -2,8 +2,10 @@ export interface User {
   username: string
 }
 
-export interface Card {
+export interface Category {
   image: string
-  id: string
+  category: string
   key: string
+  isPaired: boolean
+  isActive: boolean
 }
