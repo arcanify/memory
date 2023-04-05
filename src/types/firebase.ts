@@ -1,4 +1,4 @@
 export enum Collections {
-  CARD = 'card',
+  CATEGORY = 'category',
   USER = 'user',
 }

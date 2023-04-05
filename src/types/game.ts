@@ -1,11 +1,11 @@
 import { User } from './user'
 
 export interface Score {
-  scoreUser1: number
-  scoreUser2: number
+  scoreUser: number | null
+  scoreOpponent: number | null
 }
 
 export interface GameUsers {
-  user1: User
-  user2: User
+  user: User | null
+  opponent: User | null
 }

@@ -37,7 +37,7 @@ const username = ref<string>('')
       <button
         class="w-7/8 h-14 bg-[var(--main)] text-white rounded"
         type="button"
-        @click="getUser"
+        @click="getUser('wojtek')"
       >
         Test get user 'wojtek'
       </button>

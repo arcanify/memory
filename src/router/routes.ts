@@ -1,6 +1,7 @@
 import Home from '@/components/CreateAccountView.vue'
 import SelectGame from '@/components/SelectGameView.vue'
 import Lobby from '@/components/LobbyView.vue'
+import Game from '@/components/GameView.vue'
 import NotFound from '@/components/NotFoundView.vue'
 import { Views } from '@/types'
 
@@ -22,6 +23,12 @@ export const routes = [
     name: Views.LOBBY,
     component: Lobby,
     // props: true,
+  },
+  {
+    path: '/game',
+    name: Views.GAME,
+    component: Game,
+    // props: true
   },
   {
     path: '/:pathMatch(.*)*',

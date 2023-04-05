@@ -1,19 +1,25 @@
 <script lang="ts" setup>
-import { GameUsers, Score } from '@/types'
+import { GameUsers, Score, Category } from '@/types'
 
-const props = defineProps<{
-  category: string,
-  users: GameUsers,
+defineProps<{
+  category: Category | null,
+  users: GameUsers | null,
   score: Score
 }>()
 </script>
 
 <template>
   <div
-    class="container flex flex-col text-center gap-16 items-center mt-44 w-full"
+    class="container rounded flex justify-between gap-16 text-xl items-center py-2 px-4 w-11/12 drop-shadow-md shadow-xl"
   >
-    <h1 class="text-3xl font-bold p-8 text-[var(--main)]">
-      {{ props }}
-    </h1>
+    <p class="flex-wrap">
+      {{ users?.user?.username }}
+    </p>
+    <p class="text-2xl font-medium">
+      {{ score.scoreUser }} : {{ score.scoreOpponent }}
+    </p>
+    <p class="flex-wrap">
+      {{ users?.opponent?.username }}
+    </p>
   </div>
 </template>

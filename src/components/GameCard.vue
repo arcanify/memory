@@ -1,24 +1,17 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useApiClient } from '@/composables/useApiClient'
 import { Category } from '@/types'
 import { RouterLink } from 'vue-router'
 
-const props = defineProps<{
-  id: string
+defineProps<{
+  category: Category
 }>()
 
-const { getCategory } = useApiClient()
-
-const category = ref<Category | null>(null)
-
-getCategory(props.id).then((value) => {
-  category.value = value
-})
 </script>
 
 <template>
-  <router-link to="/lobby">
+  <router-link
+    to="/lobby"
+  >
     <div
       class="relative transition-all duration-200 cursor-pointer filter grayscale-[60%] hover:grayscale-0"
     >
