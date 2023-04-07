@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { useApiClient } from '@/composables/useApiClient' 
+import { useApiClient } from '@/composables/useApiClient'
 
-const { getUser, getCard, createUser } = useApiClient()
+const { createUser } = useApiClient()
 
 const username = ref<string>('')
 </script>
@@ -27,28 +27,15 @@ const username = ref<string>('')
       <label
         for="username_input"
         class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-[var(--main)] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
-      >Username</label>
+      >
+        {{ $t('username') }}
+      </label>
       <button
         class="w-7/8 h-14 bg-[var(--main)] text-white rounded"
         type="submit"
       >
-        Start Game
-      </button>
-      <button
-        class="w-7/8 h-14 bg-[var(--main)] text-white rounded"
-        type="button"
-        @click="getUser"
-      >
-        Test get user 'wojtek'
-      </button>
-      <button
-        class="w-7/8 h-14 bg-[var(--main)] text-white rounded"
-        type="button"
-        @click="getCard"
-      >
-        Test get card 'witcher'
+        {{ $t('startGame') }}
       </button>
     </form>
-    <p>{{ username }}</p>
   </div>
 </template>

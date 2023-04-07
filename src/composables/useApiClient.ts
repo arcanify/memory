@@ -1,49 +1,64 @@
 import { ref, Ref } from 'vue'
-// import axios from 'axios'
-import { User, Card } from '@/types'
+import { User, Category, Views, Collections } from '@/types'
+import { useRouter } from 'vue-router'
 import { db } from '@/firebase'
-import { collection, addDoc, doc, getDoc } from 'firebase/firestore'
+import { collection,where, query, addDoc, doc, getDoc, getDocs } from 'firebase/firestore'
+import { useUsers } from './useUsers'
 
 interface UseApiClient {
   user: Ref<User | null>
-  card: Ref<Card | null>
-  createUser: (user: string) => void
-  getUser: () => Promise<User | null>
-  getCard: () => Promise<Card | null>
+  category: Ref<Category | null>
+  createUser: (user: string) => Promise<void>
+  getCategory: (id: string) => Promise<Category | null>
+  getAllCategories: () => Promise<Category[] | null>
 }
+
+const { setUser } = useUsers()
 
 export const useApiClient = (): UseApiClient => {
   const user = ref<User | null>(null)
-  const card = ref<Card | null>(null)
+  const category = ref<Category | null>(null)
+  const router = useRouter()
 
-  const createUser = (username: string): void => {
-    addDoc(collection(db, 'user'), {
+  const createUser = async (username: string): Promise<void> => {
+    addDoc(collection(db, Collections.USER), {
       username,
     })
-    console.log(`User ${username} created`)
+    setUser(await getUser(username))
+    router.push({
+      name: Views.SELECT_CATEGORY,
+    })
   }
 
-  const getUser = async (): Promise<User | null> => {
-    const docRef = doc(db, 'user', 'ZT3M02YeS43ha9ZXhCc2')
-    const docSnapshot = await getDoc(docRef)
-    user.value = docSnapshot.data() as User
-    console.log(user.value)
+  const getUser = async (username: string): Promise<User | null> => {
+    const q = query(collection(db, Collections.USER), where('username', '==', username))
+    const querySnapshot = await getDocs(q)
+    
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, ' => ', doc.data())
+      user.value = doc.data() as User
+    })
+    console.log(user)
     return user.value
   }
 
-  const getCard = async (): Promise<Card | null> => {
-    const docRef = doc(db, 'card', 'WCkOGebRM668mTGz9mbH')
+  const getCategory = async (id: string): Promise<Category | null> => {
+    const docRef = doc(db, Collections.CATEGORY, id)
     const docSnapshot = await getDoc(docRef)
-    card.value = docSnapshot.data() as Card
-    console.log(card.value)
-    return card.value
+    category.value = docSnapshot.data() as Category
+    return category.value
+  }
+
+  const getAllCategories = async (): Promise<Category[] | null> => {
+    const querySnapshot = await getDocs(collection(db, Collections.CATEGORY))
+    return querySnapshot.docs.map((doc) => doc.data() as Category)
   }
 
   return {
     user,
-    card,
+    category,
     createUser,
-    getUser,
-    getCard,
+    getCategory,
+    getAllCategories
   }
 }
