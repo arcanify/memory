@@ -1,56 +1,65 @@
 <script lang="ts" setup>
 import { Score } from '@/types'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import TopBar from './TopBar.vue'
 import { useCategories } from '@/composables/useCategories'
 import { useUsers } from '@/composables/useUsers'
+import { useRoute } from 'vue-router'
+
+const pairs = useRoute().params.pairs as string
+const pairsInt = Number(pairs)
 
 const { users } = useUsers()
 const { selectedCategory } = useCategories()
 
-const score =  ref<Score>({
+const cards = [
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+]
+
+onMounted(() => {
+  const ul = document.querySelector('ul')
+
+  for (let i = 0; i <= pairsInt * 2 - 1; i++) {
+    const li = document.createElement('li')
+    li.innerHTML = cards[i]
+    li.classList.add('rounded', 'w-16', 'h-16', 'bg-red-600')
+
+    ul?.appendChild(li)
+  }
+})
+
+const score = ref<Score>({
   scoreUser: 0,
-  scoreOpponent: 0
+  scoreOpponent: 0,
 })
 </script>
 
 <template>
-  <div
-    class="container flex flex-col text-center items-center"
-  >
+  <div class="container flex flex-col text-center items-center">
     <h1 class="text-3xl font-bold p-8 text-[var(--main)]">
       {{ selectedCategory?.category }}
     </h1>
+    <h2>{{ pairs }} pairs</h2>
     <TopBar
       :category="selectedCategory"
       :users="users"
       :score="score"
     />
-    <main class="grid grid-cols-4 gap-6 mt-8">
-      <div class="rounded w-16 h-16 bg-red-600">
-        1
-      </div>
-      <div class="rounded w-16 h-16 bg-blue-600">
-        2
-      </div>
-      <div class="rounded w-16 h-16 bg-green-600">
-        3
-      </div>
-      <div class="rounded w-16 h-16 bg-yellow-600">
-        4
-      </div>
-      <div class="rounded w-16 h-16 bg-red-600">
-        5
-      </div>
-      <div class="rounded w-16 h-16 bg-blue-600">
-        6
-      </div>
-      <div class="rounded w-16 h-16 bg-green-600">
-        7
-      </div>
-      <div class="rounded w-16 h-16 bg-yellow-600">
-        8
-      </div>
-    </main>
+    <ul class="grid grid-cols-4 gap-6 mt-8" />
   </div>
 </template>

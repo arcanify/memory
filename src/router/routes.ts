@@ -25,10 +25,10 @@ export const routes = [
     // props: true,
   },
   {
-    path: '/game',
+    path: '/game/:pairs',
     name: Views.GAME,
     component: Game,
-    // props: true
+    props: true
   },
   {
     path: '/:pathMatch(.*)*',

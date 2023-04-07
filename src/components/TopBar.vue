@@ -10,7 +10,7 @@ defineProps<{
 
 <template>
   <div
-    class="container rounded flex justify-between gap-16 text-xl items-center py-2 px-4 w-11/12 drop-shadow-md shadow-xl"
+    class="container rounded grid grid-cols-3 text-xl items-center py-2 px-4 w-11/12 drop-shadow-md shadow-xl"
   >
     <p class="flex-wrap">
       {{ users?.user?.username }}

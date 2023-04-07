@@ -18,6 +18,6 @@ export const useCategories = (): UseCategories => {
 
   return {
     categories,
-    selectedCategory
+    selectedCategory,
   }
 }

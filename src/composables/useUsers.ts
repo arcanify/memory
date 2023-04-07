@@ -9,12 +9,13 @@ interface UseUsers {
 
 const currentUser = ref<User | null>(null)
 const opponentUser = ref<User | null>(null) 
-const users = ref<GameUsers | null>({
-  user: currentUser.value,
-  opponent: opponentUser.value,
-})
 
 export const useUsers = (): UseUsers => {
+  const users = ref<GameUsers | null>({
+    user: currentUser.value,
+    opponent: opponentUser.value,
+  })
+  
   return {
     users,
     currentUser,

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Category } from '@/types'
-import GameCard from './GameCard.vue'
+import CategoryCard from './CategoryCard.vue'
 import { useCategories } from '@/composables/useCategories'
 
 const { categories, selectedCategory } = useCategories()
@@ -29,7 +29,7 @@ const setCategory = (cat: Category | null): void => {
           :key="category.category"
           @click="setCategory(category)"
         >
-          <GameCard :category="category" />
+          <CategoryCard :category="category" />
         </li>
       </ul>
     </div>

@@ -3,15 +3,22 @@ import { User, Category, Views, Collections } from '@/types'
 import { useRouter } from 'vue-router'
 import { db } from '@/firebase'
 import { collection,where, query, addDoc, doc, getDoc, getDocs } from 'firebase/firestore'
+import { useUsers } from './useUsers'
 
 interface UseApiClient {
   user: Ref<User | null>
   category: Ref<Category | null>
   categories: Ref<Category[] | null>
-  createUser: (user: string) => void
+  createUser: (user: string) => Promise<void>
   getUser: (username: string) => Promise<User | null>
   getCategory: (id: string) => Promise<Category | null>
   getAllCategories: () => Promise<Category[] | null>
+}
+
+const { currentUser } = useUsers()
+
+const setUser = (username: User): void => {
+  currentUser.value = username
 }
 
 export const useApiClient = (): UseApiClient => {
@@ -20,10 +27,12 @@ export const useApiClient = (): UseApiClient => {
   const categories = ref<Category[] | null>([])
   const router = useRouter()
 
-  const createUser = (username: string): void => {
+  const createUser = async (username: string): Promise<void> => {
     addDoc(collection(db, Collections.USER), {
       username,
     })
+    const current = await getUser(username) as User
+    setUser(current)
     router.push({
       name: Views.SELECT_GAME,
     })
