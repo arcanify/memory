@@ -1,8 +1,8 @@
-import Home from '@/components/CreateAccountView.vue'
-import SelectGame from '@/components/SelectGameView.vue'
-import Lobby from '@/components/LobbyView.vue'
-import Game from '@/components/GameView.vue'
-import NotFound from '@/components/NotFoundView.vue'
+import Home from '@/views/CreateAccountView.vue'
+import SelectCategoryView from '@/views/SelectCategoryView.vue'
+import LobbyView from '@/views/LobbyView.vue'
+import GameView from '@/views/GameView.vue'
+import NotFoundView from '@/views/NotFoundView.vue'
 import { Views } from '@/types'
 
 export const routes = [
@@ -10,29 +10,25 @@ export const routes = [
     path: '/',
     name: Views.HOME,
     component: Home,
-    // props: true,
   },
   {
     path: '/select',
-    name: Views.SELECT_GAME,
-    component: SelectGame,
-    // props: true,
+    name: Views.SELECT_CATEGORY,
+    component: SelectCategoryView,
   },
   {
     path: '/lobby',
     name: Views.LOBBY,
-    component: Lobby,
-    // props: true,
+    component: LobbyView,
   },
   {
-    path: '/game/:pairs',
+    path: '/game',
     name: Views.GAME,
-    component: Game,
-    props: true
+    component: GameView,
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'Not found',
-    component: NotFound,
+    component: NotFoundView,
   },
 ]

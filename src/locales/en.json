@@ -1,3 +1,7 @@
 {
-  "hello": "Hello World with Tailwind!"
+  "username": "Username",
+  "startGame": "Start Game",
+  "selectCategory": "Select Category",
+  "notFound": "NOT FOUND",
+  "lobby": "Lobby"
 }

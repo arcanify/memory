@@ -1,29 +1,25 @@
 <script lang="ts" setup>
 import { Category } from '@/types'
-import { RouterLink } from 'vue-router'
 
-defineProps<{
+interface Props {
   category: Category
-}>()
+}
 
+defineProps<Props>()
 </script>
 
 <template>
-  <router-link
-    to="/lobby"
+  <div
+    class="relative transition-all duration-200 cursor-pointer lg:filter lg:grayscale-[60%] hover:grayscale-0"
   >
-    <div
-      class="relative transition-all duration-200 cursor-pointer filter grayscale-[60%] hover:grayscale-0"
+    <img
+      class="rounded-md object-cover h-48 w-96"
+      :src="category.image"
     >
-      <img
-        class="rounded-md object-cover h-48 w-96"
-        :src="category?.image"
-      >
-      <span
-        class="absolute left-1/2 top-1/2 -translate-x-2/4 -translate-y-2/4 text-2xl text-white font-medium"
-      >
-        {{ category?.category }}
-      </span>
-    </div>
-  </router-link>
+    <span
+      class="absolute left-1/2 top-1/2 -translate-x-2/4 -translate-y-2/4 text-2xl text-white font-medium"
+    >
+      {{ category.name }}
+    </span>
+  </div>
 </template>

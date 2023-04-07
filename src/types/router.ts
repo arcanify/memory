@@ -1,6 +1,6 @@
 export enum Views {
   HOME = 'HOME',
-  SELECT_GAME = 'SELECT_GAME',
+  SELECT_CATEGORY = 'SELECT_CATEGORY',
   LOBBY = 'LOBBY',
   GAME = 'GAME'
 }

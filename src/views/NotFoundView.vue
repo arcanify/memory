@@ -1,5 +1,3 @@
-<script lang="ts" setup></script>
-
 <template>
   <div
     class="container flex flex-col text-center gap-16 items-center mt-44 w-full"
@@ -9,7 +7,7 @@
       src="@/assets/logo.png"
     >
     <h1 class="text-3xl font-bold p-8 text-[var(--main)]">
-      NOT FOUND
+      {{ $t('notFound') }}
     </h1>
   </div>
 </template>
