@@ -1,10 +1,46 @@
 <script lang="ts" setup>
 import { useCategories } from '@/composables/useCategories'
 import { GAME_PAIRS_OPTIONS } from '@/constants'
+import { onBeforeMount, ref } from 'vue'
+import { useApiClient } from '../composables/useApiClient'
+import { Card, Pair } from '@/types'
+import { useCards } from '@/composables/useCards'
 
 const { selectedCategory, setSelectedPairsOption } = useCategories()
+const {getCategoryCards} = useApiClient()
+const {
+  cards,
+  pairs,
+  setPairs,
+} = useCards()
 
+const allCards = ref<Card[]>([])
 const pairsOptions = Object.values(GAME_PAIRS_OPTIONS)
+
+const shuffleArray = (allCards: Card[]): void => {
+  for (let i = allCards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const temp = allCards[i]
+    allCards[i] = allCards[j]
+    allCards[j] = temp
+  }
+}
+
+const unpackPairs = (allPairs: Pair[] | null): void => {
+  allPairs?.forEach((pair) => {
+    allCards.value?.push(pair.card1, pair.card2)
+  })
+}
+
+onBeforeMount(()=>{
+  if(!selectedCategory.value) return
+  if(!cards.value) return
+
+  getCategoryCards(selectedCategory.value.key)
+  shuffleArray(allCards.value)
+  setPairs(cards.value)
+  unpackPairs(pairs.value)
+})
 </script>
 
 <template>
