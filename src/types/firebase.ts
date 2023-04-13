@@ -11,3 +11,9 @@ export interface Category {
   image: string
   name: string
 }
+
+export interface Card {
+  categoryKey: string
+  pairingKey: string
+  image: string
+}
