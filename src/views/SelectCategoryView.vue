@@ -5,10 +5,10 @@ import { useCategories } from '@/composables/useCategories'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const { categories, selectedCategory } = useCategories()
+const { categories, setSelectedCategory } = useCategories()
 
 const selectCategory = (category: Category): void => {
-  selectedCategory.value = category
+  setSelectedCategory(category)
   router.push({
     name: Views.LOBBY,
   })
