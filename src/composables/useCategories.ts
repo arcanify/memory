@@ -27,7 +27,7 @@ export const useCategories = (): UseCategories => {
 
   const setSelectedCategory = (category: Category): void => {
     selectedCategory.value = category
-    setItem(StorageKey.CATEGORY, selectedCategory.value)
+    setItem<Category>(StorageKey.CATEGORY, selectedCategory.value)
   }
 
   const setSelectedPairsOption = (pairsOption: number): void => {
