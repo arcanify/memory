@@ -52,8 +52,8 @@ const clickCard = (key: string, event: Event): void => {
     />
     <div class="grid grid-cols-4 gap-6 mt-8">
       <game-card
-        v-for="card in shuffledAllCards"
-        :key="card.pairingKey"
+        v-for="(card, index) in shuffledAllCards"
+        :key="index"
         :card="card"
         @click="clickCard(card.pairingKey, $event)"
       />

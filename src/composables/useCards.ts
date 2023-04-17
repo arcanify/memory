@@ -20,8 +20,7 @@ export const useCards = (): UseCards => {
 
   const setPairs = (allCards: Card[]): void => {
     allCards.forEach((card) => {
-      const pair = { card1: card, card2: card }
-      pairs.value.push(pair)
+      pairs.value.push({ card1: card, card2: card })
     })
   }
 

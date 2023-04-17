@@ -1,4 +1,4 @@
-import { Card, User } from './firebase'
+import { Card, User } from '@/types'
 
 export interface Score {
   scoreUser: number | null
