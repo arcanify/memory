@@ -3,7 +3,7 @@ import { GameUsers, StorageKey, User } from '@/types'
 import { useLocalStorage } from '@/composables/useLocalStorage'
 
 interface UseUsers {
-  users: Ref<GameUsers | null>
+  users: Ref<GameUsers>
   currentUser: Ref<User | null>
   opponentUser: Ref<User | null>
   setUser: (username: User) => void;
@@ -11,13 +11,14 @@ interface UseUsers {
 
 const currentUser = ref<User | null>(null)
 const opponentUser = ref<User | null>(null) 
-const users = ref<GameUsers | null>({
-  user: currentUser.value,
-  opponent: opponentUser.value,
-})
 
 export const useUsers = (): UseUsers => {
   const { setItem } = useLocalStorage()
+  
+  const users = ref<GameUsers>({
+    user: currentUser.value,
+    opponent: opponentUser.value,
+  })
 
   const setUser = (username: User): void => {
     currentUser.value = username

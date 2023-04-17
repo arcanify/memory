@@ -1,4 +1,4 @@
-import { User } from './user'
+import { Card, User } from '@/types'
 
 export interface Score {
   scoreUser: number | null
@@ -8,4 +8,9 @@ export interface Score {
 export interface GameUsers {
   user: User | null
   opponent: User | null
+}
+
+export interface Pair {
+  card1: Card
+  card2: Card
 }
