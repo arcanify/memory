@@ -30,7 +30,7 @@ defineProps<Props>()
   &__side {
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    
+
     &--back {
       transform: rotateY(180deg);
     }
@@ -41,5 +41,10 @@ defineProps<Props>()
 }
 .flip-back {
   transform: rotateY(0);
+}
+
+.completed {
+  border: 3px solid rgb(0, 255, 0);
+  border-radius: 20px;
 }
 </style>

@@ -9,9 +9,18 @@ import { useCards } from '@/composables/useCards'
 
 const { users } = useUsers()
 
-users.value.opponent = {username: "test"}
+users.value.opponent = {username: 'test'}
 
-const { shuffledAllCards } = useCards()
+const alreadyClickedCard = ref<HTMLElement | null>(null)
+
+const { 
+  shuffledAllCards, 
+  swappedCard, 
+  swappedPairs, 
+  setSwappedCard, 
+  completePairedCards 
+} = useCards()
+
 const {
   selectedCategory,
   selectedPairsOption,
@@ -24,18 +33,57 @@ const score = ref<Score>({
 
 const clickCard = (key: string, event: Event): void => {
   console.log(key)
-  const card = event.currentTarget as HTMLElement
+  console.log(swappedCard.value)
+  console.log(alreadyClickedCard.value)
   
-  if(card.classList.contains('active')) {
+  const card = event.currentTarget as HTMLElement
+
+  card.classList.add('active')
+  card.querySelector('.card__side--back')?.classList.add('flip-back')
+  card.querySelector('.card__side--front')?.classList.add('flip-front')
+
+  if (!alreadyClickedCard.value) {
+    alreadyClickedCard.value = card
+  }
+  
+  if(swappedCard.value === key) {
+    const pair = document.querySelectorAll('#'+key)
+    console.log(pair)
+    pair.forEach(card => {
+      card.classList.add('completed')
+    })
+    completePairedCards(key)
+    alreadyClickedCard.value = null
+    swappedCard.value = null
+    // shuffledAllCards.value.forEach((card)=>{
+    //   if(card.pairingKey)
+    // })
+  } else if (swappedCard.value && swappedCard.value !== key) {
     card.classList.remove('active')
     card.querySelector('.card__side--back')?.classList.remove('flip-back')
     card.querySelector('.card__side--front')?.classList.remove('flip-front')
-  }
+    alreadyClickedCard.value.classList.remove('active')
+    alreadyClickedCard.value.querySelector('.card__side--back')?.classList.remove('flip-back')
+    alreadyClickedCard.value.querySelector('.card__side--front')?.classList.remove('flip-front')
+    alreadyClickedCard.value = null
+    swappedCard.value = null
+  } 
   else {
-    card.classList.add('active')
-    card.querySelector('.card__side--back')?.classList.add('flip-back')
-    card.querySelector('.card__side--front')?.classList.add('flip-front')
+    setSwappedCard(key)
   }
+
+  console.log(card)  
+
+  // if(card.classList.contains('active')) {
+  //   card.classList.remove('active')
+  //   card.querySelector('.card__side--back')?.classList.remove('flip-back')
+  //   card.querySelector('.card__side--front')?.classList.remove('flip-front')
+  // }
+  // else {
+  //   card.classList.add('active')
+  //   card.querySelector('.card__side--back')?.classList.add('flip-back')
+  //   card.querySelector('.card__side--front')?.classList.add('flip-front')
+  // }
 }
 </script>
 
@@ -53,6 +101,7 @@ const clickCard = (key: string, event: Event): void => {
     <div class="grid grid-cols-4 gap-6 mt-8">
       <game-card
         v-for="(card, index) in shuffledAllCards"
+        :id="card.pairingKey"
         :key="index"
         :card="card"
         @click="clickCard(card.pairingKey, $event)"
