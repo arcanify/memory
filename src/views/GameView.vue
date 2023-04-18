@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Score } from '@/types'
-import { ref } from 'vue'
+import { ComponentPublicInstance, ref } from 'vue'
 import TopBar from '@/components/TopBar.vue'
 import GameCard from '@/components/GameCard.vue'
 import { useCategories } from '@/composables/useCategories'
@@ -31,17 +31,24 @@ const score = ref<Score>({
   scoreOpponent: 0,
 })
 
-const clickCard = (key: string, event: Event): void => {
-  console.log(key)
-  console.log(swappedCard.value)
-  console.log(alreadyClickedCard.value)
+const allCardsRefs = ref<ComponentPublicInstance[] | null>(null)
+
+const clickCard = (key: string, index: number): void => {
+  if (!allCardsRefs.value) return
   
-  const card = event.currentTarget as HTMLElement
+  const card = allCardsRefs.value[index].$el as HTMLElement
 
-  card.classList.add('active')
-  card.querySelector('.card__side--back')?.classList.add('flip-back')
-  card.querySelector('.card__side--front')?.classList.add('flip-front')
+  // TODO -> move to constants folder
+  const SIDE_FRONT = 0
+  const SIDE_BACK = 1
 
+  card.children[SIDE_FRONT].classList.add('flip-front')
+  card.children[SIDE_BACK].classList.add('flip-back')
+
+
+
+
+  // TODO NEXT
   if (!alreadyClickedCard.value) {
     alreadyClickedCard.value = card
   }
@@ -59,10 +66,11 @@ const clickCard = (key: string, event: Event): void => {
     //   if(card.pairingKey)
     // })
   } else if (swappedCard.value && swappedCard.value !== key) {
-    card.classList.remove('active')
+    // 1) SWAP the second card which doesn't match
+
     card.querySelector('.card__side--back')?.classList.remove('flip-back')
     card.querySelector('.card__side--front')?.classList.remove('flip-front')
-    alreadyClickedCard.value.classList.remove('active')
+    
     alreadyClickedCard.value.querySelector('.card__side--back')?.classList.remove('flip-back')
     alreadyClickedCard.value.querySelector('.card__side--front')?.classList.remove('flip-front')
     alreadyClickedCard.value = null
@@ -72,7 +80,7 @@ const clickCard = (key: string, event: Event): void => {
     setSwappedCard(key)
   }
 
-  console.log(card)  
+  // console.log(card)  
 
   // if(card.classList.contains('active')) {
   //   card.classList.remove('active')
@@ -93,6 +101,12 @@ const clickCard = (key: string, event: Event): void => {
       {{ selectedCategory?.name }}
     </h1>
     <h2>{{ selectedPairsOption }} pairs</h2>
+    <!-- <p>
+      swappedCard: {{ swappedCard }}
+    </p>
+    <p>
+      alreadyClickedCard: {{ alreadyClickedCard }}
+    </p> -->
     <top-bar
       :category="selectedCategory"
       :users="users"
@@ -103,8 +117,9 @@ const clickCard = (key: string, event: Event): void => {
         v-for="(card, index) in shuffledAllCards"
         :id="card.pairingKey"
         :key="index"
+        ref="allCardsRefs"
         :card="card"
-        @click="clickCard(card.pairingKey, $event)"
+        @click="clickCard(card.pairingKey, index)"
       />
     </div>
   </div>
