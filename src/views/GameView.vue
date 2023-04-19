@@ -6,92 +6,73 @@ import GameCard from '@/components/GameCard.vue'
 import { useCategories } from '@/composables/useCategories'
 import { useUsers } from '@/composables/useUsers'
 import { useCards } from '@/composables/useCards'
+import { CARD_SIDE_OPTIONS } from '@/constants'
 
 const { users } = useUsers()
 
-users.value.opponent = {username: 'test'}
-
-const alreadyClickedCard = ref<HTMLElement | null>(null)
-
-const { 
-  shuffledAllCards, 
-  swappedCard, 
-  swappedPairs, 
-  setSwappedCard, 
-  completePairedCards 
-} = useCards()
+users.value.opponent = { username: 'test' }
 
 const {
-  selectedCategory,
-  selectedPairsOption,
-} = useCategories()
+  shuffledAllCards,
+  swappedCard,
+  setSwappedCard,
+  completePairedCards,
+} = useCards()
+
+const { selectedCategory, selectedPairsOption } = useCategories()
 
 const score = ref<Score>({
   scoreUser: 0,
   scoreOpponent: 0,
 })
 
+const swappedCardEl = ref<HTMLElement | null>(null)
 const allCardsRefs = ref<ComponentPublicInstance[] | null>(null)
 
-const clickCard = (key: string, index: number): void => {
+// Ten delay, który ty chyba probowałeś użyć jak robiliśmy live coding
+const delay = (ms: number): Promise<void> => new Promise(res => setTimeout(res, ms))
+
+const clickCard = async (key: string, index: number): Promise<void> => {
   if (!allCardsRefs.value) return
-  
+
   const card = allCardsRefs.value[index].$el as HTMLElement
 
-  // TODO -> move to constants folder
-  const SIDE_FRONT = 0
-  const SIDE_BACK = 1
+  // Zabezpiecza przed zaliczeniem gdy klikniemy dwa razy tą samą kartę
+  if(card === swappedCardEl.value) return
 
-  card.children[SIDE_FRONT].classList.add('flip-front')
-  card.children[SIDE_BACK].classList.add('flip-back')
+  // Karta obraca się zawsze na start, niezależnie czy jest dobrze czy źle
+  card.children[CARD_SIDE_OPTIONS.front].classList.add('flip-front')
+  card.children[CARD_SIDE_OPTIONS.back].classList.add('flip-back')
 
-
-
-
-  // TODO NEXT
-  if (!alreadyClickedCard.value) {
-    alreadyClickedCard.value = card
+  if (!swappedCardEl.value) {
+    swappedCardEl.value = card
   }
-  
-  if(swappedCard.value === key) {
-    const pair = document.querySelectorAll('#'+key)
-    console.log(pair)
-    pair.forEach(card => {
-      card.classList.add('completed')
-    })
-    completePairedCards(key)
-    alreadyClickedCard.value = null
-    swappedCard.value = null
-    // shuffledAllCards.value.forEach((card)=>{
-    //   if(card.pairingKey)
-    // })
-  } else if (swappedCard.value && swappedCard.value !== key) {
-    // 1) SWAP the second card which doesn't match
 
-    card.querySelector('.card__side--back')?.classList.remove('flip-back')
-    card.querySelector('.card__side--front')?.classList.remove('flip-front')
-    
-    alreadyClickedCard.value.querySelector('.card__side--back')?.classList.remove('flip-back')
-    alreadyClickedCard.value.querySelector('.card__side--front')?.classList.remove('flip-front')
-    alreadyClickedCard.value = null
+  if (swappedCard.value === key) {
+    card.classList.add('completed')
+    swappedCardEl.value.classList.add('completed')
+    completePairedCards(key)
+
+    swappedCardEl.value = null
     swappedCard.value = null
-  } 
-  else {
+  } else if (swappedCard.value && swappedCard.value !== key) {
+    // Delay dlatego że bez niego klasy dodane w 43 linii są od razu usuwane
+    // i druga karta się nie obraca, z delayem wygląda to naturalnie
+    await delay(1000)
+    card.children[CARD_SIDE_OPTIONS.front].classList.remove('flip-front')
+    card.children[CARD_SIDE_OPTIONS.back].classList.remove('flip-back')
+    swappedCardEl.value.children[CARD_SIDE_OPTIONS.front].classList.remove(
+      'flip-front'
+    )
+    swappedCardEl.value.children[CARD_SIDE_OPTIONS.back].classList.remove(
+      'flip-back'
+    )
+
+    swappedCardEl.value = null
+    swappedCard.value = null
+  } else {
     setSwappedCard(key)
   }
-
-  // console.log(card)  
-
-  // if(card.classList.contains('active')) {
-  //   card.classList.remove('active')
-  //   card.querySelector('.card__side--back')?.classList.remove('flip-back')
-  //   card.querySelector('.card__side--front')?.classList.remove('flip-front')
-  // }
-  // else {
-  //   card.classList.add('active')
-  //   card.querySelector('.card__side--back')?.classList.add('flip-back')
-  //   card.querySelector('.card__side--front')?.classList.add('flip-front')
-  // }
 }
 </script>
 
@@ -101,12 +82,6 @@ const clickCard = (key: string, index: number): void => {
       {{ selectedCategory?.name }}
     </h1>
     <h2>{{ selectedPairsOption }} pairs</h2>
-    <!-- <p>
-      swappedCard: {{ swappedCard }}
-    </p>
-    <p>
-      alreadyClickedCard: {{ alreadyClickedCard }}
-    </p> -->
     <top-bar
       :category="selectedCategory"
       :users="users"
