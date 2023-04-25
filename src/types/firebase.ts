@@ -15,8 +15,10 @@ export interface Category {
 }
 
 export interface Card {
+  id: string;
   categoryKey: string
   pairingKey: string
   frontImage: string
   backImage: string
+  isFlipped: boolean
 }
