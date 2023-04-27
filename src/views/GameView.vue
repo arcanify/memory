@@ -14,9 +14,7 @@ const {
   shuffledAllCards,
   activeCard,
   setActiveCard,
-  // completePairedCards,
 } = useCards()
-
 
 users.value.opponent = { username: 'test' }
 const score = ref<Score>({
@@ -25,7 +23,7 @@ const score = ref<Score>({
 })
 
 const clickCard = async (card: Card, index: number): Promise<void> => {
-  if(card.id === activeCard.value?.id) return
+  if (card.isFlipped) return
 
   shuffledAllCards.value[index].isFlipped = true
 
@@ -36,11 +34,11 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
 
   if (activeCard.value.pairingKey === card.pairingKey) {
     // TODO
-    // Save PAIR
-    // Disable next click on this card
-    // ...
+    // Save pair in live db
   } else {
-    const oldIndex = shuffledAllCards.value.findIndex((el) => el.id === activeCard.value?.id)
+    const oldIndex = shuffledAllCards.value.findIndex(
+      (el) => el.id === activeCard.value?.id
+    )
     await delay(1000)
     shuffledAllCards.value[oldIndex].isFlipped = false
     shuffledAllCards.value[index].isFlipped = false
@@ -55,11 +53,7 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
       {{ selectedCategory?.name }}
     </h1>
     <h2>{{ selectedPairsOption }} pairs</h2>
-    <top-bar
-      :category="selectedCategory"
-      :users="users"
-      :score="score"
-    />
+    <top-bar :category="selectedCategory" :users="users" :score="score" />
     <div class="grid grid-cols-4 gap-6 mt-8">
       <game-card
         v-for="(card, index) in shuffledAllCards"
