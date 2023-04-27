@@ -23,6 +23,8 @@ const username = ref<string>('')
         class="block rounded px-2.5 pb-2.5 pt-5 w-full text-sm border border-black appearance-none focus:outline-none focus:ring-0 focus:border-[var(--main)] peer"
         type="text"
         placeholder=" "
+        required
+        pattern=".*\S+.*"
       >
       <label
         for="username_input"
