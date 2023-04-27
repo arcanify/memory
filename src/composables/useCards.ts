@@ -2,14 +2,10 @@ import { ref, Ref } from 'vue'
 import { Card, Pair } from '@/types'
 
 interface UseCards {
-
-
   cards: Ref<Card[]>
-  shuffledAllCards: Ref<any>
+  shuffledAllCards: Ref<Card[]>
   pairs: Ref<Pair[]>
-
   activeCard: Ref<Card | null>
-
   // swappedCard: Ref<string | null>
   swappedPairs: Ref<string[]>
   setActiveCard: (card: Card | null) => void

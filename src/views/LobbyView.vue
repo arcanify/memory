@@ -17,6 +17,13 @@ const shuffleArray = (allPairs: Pair[]): void => {
     shuffledAllCards.value.push(pair.card1, pair.card2)
   })
 
+  for(let i = 0; i < shuffledAllCards.value.length; i++) {   
+    shuffledAllCards.value[i] = {
+      ...shuffledAllCards.value[i],
+      id: crypto.randomUUID()
+    }
+  }
+  
   for (let i = shuffledAllCards.value.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
     const tmp = shuffledAllCards.value[i]

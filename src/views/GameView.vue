@@ -18,11 +18,7 @@ const {
   // completePairedCards,
 } = useCards()
 
-// TODO add unique ID to shuffledAllCards so we don't need to map it here
-const tmpCards = ref<Card[]>(shuffledAllCards.value.map((card, index) => ({
-  ...card,
-  id: index
-})))
+console.log(shuffledAllCards.value)
 
 const { selectedCategory, selectedPairsOption } = useCategories()
 
@@ -36,7 +32,7 @@ const delay = (ms: number): Promise<void> => new Promise(res => setTimeout(res, 
 const clickCard = async (card: Card, index: number): Promise<void> => {
   if(card.id === activeCard.value?.id) return
 
-  tmpCards.value[index].isFlipped = true
+  shuffledAllCards.value[index].isFlipped = true
 
   if (!activeCard.value) {
     setActiveCard(card)
@@ -49,10 +45,10 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
     // Disable next click on this card
     // ...
   } else {
-    const oldIndex = tmpCards.value.findIndex((el) => el.id === activeCard.value?.id)
+    const oldIndex = shuffledAllCards.value.findIndex((el) => el.id === activeCard.value?.id)
     await delay(1000)
-    tmpCards.value[oldIndex].isFlipped = false
-    tmpCards.value[index].isFlipped = false
+    shuffledAllCards.value[oldIndex].isFlipped = false
+    shuffledAllCards.value[index].isFlipped = false
   }
   setActiveCard(null)
 }
@@ -71,7 +67,7 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
     />
     <div class="grid grid-cols-4 gap-6 mt-8">
       <game-card
-        v-for="(card, index) in tmpCards"
+        v-for="(card, index) in shuffledAllCards"
         :key="index"
         :card="card"
         @click="clickCard(card, index)"
