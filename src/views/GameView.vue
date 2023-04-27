@@ -6,11 +6,10 @@ import GameCard from '@/components/GameCard.vue'
 import { useCategories } from '@/composables/useCategories'
 import { useUsers } from '@/composables/useUsers'
 import { useCards } from '@/composables/useCards'
+import { delay } from '@/helpers'
 
 const { users } = useUsers()
-
-users.value.opponent = { username: 'test' }
-
+const { selectedCategory, selectedPairsOption } = useCategories()
 const {
   shuffledAllCards,
   activeCard,
@@ -18,16 +17,12 @@ const {
   // completePairedCards,
 } = useCards()
 
-console.log(shuffledAllCards.value)
 
-const { selectedCategory, selectedPairsOption } = useCategories()
-
+users.value.opponent = { username: 'test' }
 const score = ref<Score>({
   scoreUser: 0,
   scoreOpponent: 0,
 })
-
-const delay = (ms: number): Promise<void> => new Promise(res => setTimeout(res, ms))
 
 const clickCard = async (card: Card, index: number): Promise<void> => {
   if(card.id === activeCard.value?.id) return
