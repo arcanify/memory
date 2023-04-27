@@ -6,37 +6,26 @@ import GameCard from '@/components/GameCard.vue'
 import { useCategories } from '@/composables/useCategories'
 import { useUsers } from '@/composables/useUsers'
 import { useCards } from '@/composables/useCards'
+import { delay } from '@/helpers'
 
 const { users } = useUsers()
-
-users.value.opponent = { username: 'test' }
-
+const { selectedCategory, selectedPairsOption } = useCategories()
 const {
   shuffledAllCards,
   activeCard,
   setActiveCard,
-  // completePairedCards,
 } = useCards()
 
-// TODO add unique ID to shuffledAllCards so we don't need to map it here
-const tmpCards = ref<Card[]>(shuffledAllCards.value.map((card, index) => ({
-  ...card,
-  id: index
-})))
-
-const { selectedCategory, selectedPairsOption } = useCategories()
-
+users.value.opponent = { username: 'test' }
 const score = ref<Score>({
   scoreUser: 0,
   scoreOpponent: 0,
 })
 
-const delay = (ms: number): Promise<void> => new Promise(res => setTimeout(res, ms))
-
 const clickCard = async (card: Card, index: number): Promise<void> => {
-  if(card.id === activeCard.value?.id) return
+  if (card.isFlipped) return
 
-  tmpCards.value[index].isFlipped = true
+  shuffledAllCards.value[index].isFlipped = true
 
   if (!activeCard.value) {
     setActiveCard(card)
@@ -45,14 +34,14 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
 
   if (activeCard.value.pairingKey === card.pairingKey) {
     // TODO
-    // Save PAIR
-    // Disable next click on this card
-    // ...
+    // Save pair in live db
   } else {
-    const oldIndex = tmpCards.value.findIndex((el) => el.id === activeCard.value?.id)
+    const oldIndex = shuffledAllCards.value.findIndex(
+      (el) => el.id === activeCard.value?.id
+    )
     await delay(1000)
-    tmpCards.value[oldIndex].isFlipped = false
-    tmpCards.value[index].isFlipped = false
+    shuffledAllCards.value[oldIndex].isFlipped = false
+    shuffledAllCards.value[index].isFlipped = false
   }
   setActiveCard(null)
 }
@@ -64,14 +53,10 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
       {{ selectedCategory?.name }}
     </h1>
     <h2>{{ selectedPairsOption }} pairs</h2>
-    <top-bar
-      :category="selectedCategory"
-      :users="users"
-      :score="score"
-    />
+    <top-bar :category="selectedCategory" :users="users" :score="score" />
     <div class="grid grid-cols-4 gap-6 mt-8">
       <game-card
-        v-for="(card, index) in tmpCards"
+        v-for="(card, index) in shuffledAllCards"
         :key="index"
         :card="card"
         @click="clickCard(card, index)"

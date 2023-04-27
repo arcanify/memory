@@ -2,36 +2,24 @@ import { ref, Ref } from 'vue'
 import { Card, Pair } from '@/types'
 
 interface UseCards {
-
-
   cards: Ref<Card[]>
-  shuffledAllCards: Ref<any>
   pairs: Ref<Pair[]>
-
+  shuffledAllCards: Ref<Card[]>
   activeCard: Ref<Card | null>
-
-  // swappedCard: Ref<string | null>
-  swappedPairs: Ref<string[]>
-  setActiveCard: (card: Card | null) => void
-  completePairedCards: (value: string) => void
   setCards: (value: Card[]) => void
   setPairs: (allCards: Card[]) => void
+  setActiveCard: (card: Card | null) => void
 }
 
 const cards = ref<Card[]>([])
-const shuffledAllCards = ref<Card[]>([])
 const pairs = ref<Pair[]>([])
+const shuffledAllCards = ref<Card[]>([])
 const activeCard = ref<Card | null>(null)
-const swappedPairs = ref<string[]>([])
 
 export const useCards = (): UseCards => {
   
-  const setActiveCard = (card: Card | null): void => {
-    activeCard.value = card
-  }
-
-  const completePairedCards = (value: string): void => {
-    swappedPairs.value.push(value)
+  const setCards = (value: Card[]): void => {
+    cards.value = value
   }
 
   const setPairs = (allCards: Card[]): void => {
@@ -40,19 +28,17 @@ export const useCards = (): UseCards => {
     })
   }
 
-  const setCards = (value: Card[]): void => {
-    cards.value = value
+  const setActiveCard = (card: Card | null): void => {
+    activeCard.value = card
   }
 
   return {
     cards,
-    shuffledAllCards,
     pairs,
-    setPairs,
-    setCards,
+    shuffledAllCards,
     activeCard,
-    swappedPairs,
+    setCards,
+    setPairs,
     setActiveCard,
-    completePairedCards
   }
 }

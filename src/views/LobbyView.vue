@@ -3,30 +3,15 @@ import { useCategories } from '@/composables/useCategories'
 import { GAME_PAIRS_OPTIONS } from '@/constants'
 import { onBeforeMount } from 'vue'
 import { useApiClient } from '../composables/useApiClient'
-import { Pair } from '@/types'
+import { shuffleArray } from '@/helpers'
 import { useCards } from '@/composables/useCards'
 
 const { selectedCategory, setSelectedPairsOption } = useCategories()
 const { getCategoryCards } = useApiClient()
-const { cards, shuffledAllCards, pairs, setPairs } = useCards()
+const { cards, pairs, setPairs } = useCards()
 
 const pairsOptions = Object.values(GAME_PAIRS_OPTIONS)
 
-const shuffleArray = (allPairs: Pair[]): void => {
-  allPairs.forEach((pair) => {
-    shuffledAllCards.value.push(pair.card1, pair.card2)
-  })
-
-  for (let i = shuffledAllCards.value.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    const tmp = shuffledAllCards.value[i]
-    shuffledAllCards.value[i] = shuffledAllCards.value[j]
-    shuffledAllCards.value[j] = tmp
-  }
-}
-
-// Musi być async await bo bez tego nie zdąża zaciągnąć
-// z Firebase kart i w drugim if-ie zwróci returna
 onBeforeMount(async() => {
   if (!selectedCategory.value) return
   if (!cards.value) return
