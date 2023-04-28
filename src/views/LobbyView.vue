@@ -3,22 +3,53 @@ import { useCategories } from '@/composables/useCategories'
 import { GAME_PAIRS_OPTIONS } from '@/constants'
 import { onBeforeMount } from 'vue'
 import { useApiClient } from '../composables/useApiClient'
-import { shuffleArray } from '@/helpers'
 import { useCards } from '@/composables/useCards'
+import { useRoute } from 'vue-router'
+import { useUsers } from '../composables/useUsers'
+import { useRtdb } from '../composables/useRtdb'
+import { shuffleArray } from '@/helpers'
 
 const { selectedCategory, setSelectedPairsOption } = useCategories()
 const { getCategoryCards } = useApiClient()
 const { cards, pairs, setPairs } = useCards()
+const {currentUser} = useUsers()
+const {startLobby,getLobby,joinLobby} = useRtdb()
+const route = useRoute()
 
 const pairsOptions = Object.values(GAME_PAIRS_OPTIONS)
 
-onBeforeMount(async() => {
-  if (!selectedCategory.value) return
-  if (!cards.value) return
+// Musi być async await bo bez tego nie zdąża zaciągnąć
+// z Firebase kart i w drugim if-ie zwróci returna
+onBeforeMount(async () => {
+  const routeId = route.params.id as string
+  const lobby = await getLobby(routeId)  
+  
+  // Jeśli lobby istnieje to dodaj użytkownika
+  if(lobby) {
+    joinLobby(routeId, 'guestUser')
+  }
+  // Jeśli lobby nie istnieje to je stwórz
+  else { 
+    if (!selectedCategory.value) return
+    if (!cards.value) return
+    if (currentUser.value === null) return
+    
+    await getCategoryCards(selectedCategory.value.key)
+    setPairs(cards.value)
+    shuffleArray(pairs.value)
+    
+    startLobby(routeId, currentUser.value.username)
+  }
 
-  await getCategoryCards(selectedCategory.value.key)
-  setPairs(cards.value)
-  shuffleArray(pairs.value)
+  // Jeśli obaj gracze są w lobby to start odliczania (log na teraz)
+  const isLobbyReady = async(): Promise<void> => {
+    if(lobby?.players.length === 2) {
+      alert('READY')
+    }
+  }
+  await isLobbyReady()
+
+  // Działa po odświeżeniu lobby, trzeba zrobić jakiś watcher
 })
 </script>
 

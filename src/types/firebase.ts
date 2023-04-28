@@ -22,3 +22,8 @@ export interface Card {
   backImage: string
   isFlipped: boolean
 }
+
+export interface Lobby {
+  id: string;
+  players: string[]
+}

@@ -17,7 +17,7 @@ export const routes = [
     component: SelectCategoryView,
   },
   {
-    path: '/lobby',
+    path: '/lobby/:id',
     name: Views.LOBBY,
     component: LobbyView,
   },
