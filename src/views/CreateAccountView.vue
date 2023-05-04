@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useApiClient } from '@/composables/useApiClient'
+import { useLobby } from '@/composables/useLobby'
 
 const { createUser } = useApiClient()
+const { lobby } = useLobby()
 
 const username = ref<string>('')
 </script>
@@ -36,7 +38,7 @@ const username = ref<string>('')
         class="w-7/8 h-14 bg-[var(--main)] text-white rounded"
         type="submit"
       >
-        {{ $t('startGame') }}
+        {{ lobby ? $t('joinLobby') : $t('startGame') }}
       </button>
     </form>
   </div>

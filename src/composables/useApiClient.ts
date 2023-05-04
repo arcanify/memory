@@ -4,6 +4,8 @@ import { db } from '@/firebase'
 import { collection,where, query, addDoc, getDocs } from 'firebase/firestore'
 import { useUsers } from './useUsers'
 import { useCards } from './useCards'
+import { useLobby } from './useLobby'
+
 
 interface UseApiClient {
   createUser: (user: string) => Promise<void>
@@ -16,6 +18,7 @@ const { setCards } = useCards()
 
 export const useApiClient = (): UseApiClient => {
   const router = useRouter()
+  const { lobby, joinLobby } = useLobby()
 
   const createUser = async (username: string): Promise<void> => {
     addDoc(collection(db, Collections.USER), {
@@ -27,16 +30,26 @@ export const useApiClient = (): UseApiClient => {
     querySnapshot.forEach((doc) => {
       setUser(doc.data() as User)
     })
-    router.push({
-      name: Views.SELECT_CATEGORY,
-    })
+
+    if(!lobby.value) {
+      router.push({
+        name: Views.SELECT_CATEGORY,
+      })
+    } else {
+      joinLobby(lobby.value.ID, username)
+      router.push({
+        name: Views.LOBBY,
+        params: {
+          id: lobby.value.ID
+        }
+      })
+    }
   }
 
   const getCategoryCards = async (categoryKey: string): Promise<void> => {
     const q = query(collection(db, Collections.CARD), where('categoryKey', '==', categoryKey))
     const querySnapshot = await getDocs(q)
     const tmpCards: Card[] = []
-    console.log(querySnapshot)
     
     querySnapshot.forEach((doc) => {
       tmpCards.push(doc.data() as Card)
