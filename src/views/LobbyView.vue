@@ -2,7 +2,7 @@
 import { useCategories } from '@/composables/useCategories'
 import { GAME_PAIRS_OPTIONS } from '@/constants'
 import { onBeforeMount } from 'vue'
-import { useApiClient } from '../composables/useApiClient'
+import { useApiClient } from '@/composables/useApiClient'
 import { useCards } from '@/composables/useCards'
 import { useRoute, useRouter } from 'vue-router'
 import { useUsers } from '@/composables/useUsers'

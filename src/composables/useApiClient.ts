@@ -2,9 +2,9 @@ import { User, Category, Views, Collections, Card } from '@/types'
 import { useRouter } from 'vue-router'
 import { db } from '@/firebase'
 import { collection,where, query, addDoc, getDocs } from 'firebase/firestore'
-import { useUsers } from './useUsers'
-import { useCards } from './useCards'
-import { useLobby } from './useLobby'
+import { useUsers } from '@/composables/useUsers'
+import { useCards } from '@/composables/useCards'
+import { useLobby } from '@/composables/useLobby'
 
 
 interface UseApiClient {
