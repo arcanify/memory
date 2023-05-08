@@ -1,3 +1,5 @@
+import { Score } from '@/types'
+
 export enum Collections {
   CATEGORY = 'category',
   USER = 'user',
@@ -21,4 +23,11 @@ export interface Card {
   frontImage: string
   backImage: string
   isFlipped: boolean
+}
+
+export interface Lobby {
+  ID: string
+  category: string
+  players: string[]
+  score: Score
 }

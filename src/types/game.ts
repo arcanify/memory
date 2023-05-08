@@ -1,8 +1,8 @@
 import { Card, User } from '@/types'
 
 export interface Score {
-  scoreUser: number | null
-  scoreOpponent: number | null
+  player1: number | null
+  player2: number | null
 }
 
 export interface GameUsers {

@@ -47,9 +47,4 @@ defineProps<Props>()
 .flip-back {
   transform: rotateY(0);
 }
-
-.completed {
-  border: 3px solid rgb(0, 255, 0);
-  border-radius: 20px;
-}
 </style>

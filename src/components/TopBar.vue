@@ -1,34 +1,26 @@
 <script lang="ts" setup>
-import { GameUsers, Score, Category } from '@/types'
+import { useLobby } from '@/composables/useLobby'
 
-interface Props {
-  category: Category | null,
-  users: GameUsers | null,
-  score: Score
-}
-
-defineProps<Props>()
+const { lobby } = useLobby()
 </script>
 
 <template>
   <div
-    v-if="users"
+    v-if="lobby"
     class="container rounded flex justify-between text-xl items-center py-2 px-4 w-11/12 drop-shadow-md shadow-xl"
   >
     <p
-      v-if="users.user"
       class="flex-1"
     >
-      {{ users.user.username }}
+      {{ lobby.players[0] }}
     </p>
     <p class="text-2xl font-medium flex-1">
-      {{ score.scoreUser }} : {{ score.scoreOpponent }}
+      {{ lobby.score.player1 }} : {{ lobby.score.player2 }}
     </p>
     <p
-      v-if="users.opponent"
       class="flex-1"
     >
-      {{ users.opponent.username }}
+      {{ lobby.players[1] }}
     </p>
   </div>
 </template>

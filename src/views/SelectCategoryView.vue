@@ -11,6 +11,9 @@ const selectCategory = (category: Category): void => {
   setSelectedCategory(category)
   router.push({
     name: Views.LOBBY,
+    params: {
+      id: crypto.randomUUID()
+    }
   })
 }
 </script>

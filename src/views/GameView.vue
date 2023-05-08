@@ -1,26 +1,19 @@
 <script lang="ts" setup>
-import { Card, Score } from '@/types'
-import { ref } from 'vue'
+import { Card } from '@/types'
 import TopBar from '@/components/TopBar.vue'
 import GameCard from '@/components/GameCard.vue'
 import { useCategories } from '@/composables/useCategories'
-import { useUsers } from '@/composables/useUsers'
 import { useCards } from '@/composables/useCards'
+import { useLobby } from '@/composables/useLobby'
 import { delay } from '@/helpers'
 
-const { users } = useUsers()
-const { selectedCategory, selectedPairsOption } = useCategories()
+const { selectedPairsOption } = useCategories()
 const {
   shuffledAllCards,
   activeCard,
   setActiveCard,
 } = useCards()
-
-users.value.opponent = { username: 'test' }
-const score = ref<Score>({
-  scoreUser: 0,
-  scoreOpponent: 0,
-})
+const { lobby } = useLobby()
 
 const clickCard = async (card: Card, index: number): Promise<void> => {
   if (card.isFlipped) return
@@ -48,12 +41,15 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
 </script>
 
 <template>
-  <div class="container flex flex-col text-center items-center">
+  <div
+    v-if="lobby"
+    class="container flex flex-col text-center items-center"
+  >
     <h1 class="text-3xl font-bold p-8 text-[var(--main)]">
-      {{ selectedCategory?.name }}
+      {{ lobby.category }}
     </h1>
-    <h2>{{ selectedPairsOption }} pairs</h2>
-    <top-bar :category="selectedCategory" :users="users" :score="score" />
+    <h2>{{ selectedPairsOption }} {{ $t('pairs') }}</h2>
+    <top-bar />
     <div class="grid grid-cols-4 gap-6 mt-8">
       <game-card
         v-for="(card, index) in shuffledAllCards"
