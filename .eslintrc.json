@@ -15,15 +15,6 @@
   },
   "rules": {
     "@typescript-eslint/explicit-function-return-type": ["error"],
-    "@typescript-eslint/ban-types": [
-      1,
-      {
-        "types": {
-          "Ref": "Use ref<type>",
-          "ComputedRef": "Use computed<type>"
-        }
-      }
-    ],
     "max-depth": [
       2,
       {
