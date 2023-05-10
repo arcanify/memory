@@ -1,13 +1,8 @@
-import { Card, User } from '@/types'
+import { Card } from '@/types'
 
 export interface Score {
   player1: number | null
   player2: number | null
-}
-
-export interface GameUsers {
-  user: User | null
-  opponent: User | null
 }
 
 export interface Pair {

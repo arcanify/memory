@@ -6,7 +6,6 @@ import { useUsers } from '@/composables/useUsers'
 import { useCards } from '@/composables/useCards'
 import { useLobby } from '@/composables/useLobby'
 
-
 interface UseApiClient {
   createUser: (user: string) => Promise<void>
   getCategoryCards: (categoryKey: string) => Promise<void>
