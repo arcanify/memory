@@ -30,4 +30,7 @@ export interface Lobby {
   category: string
   players: string[]
   score: Score
+  cards: Card[]
+  activeCard: Card
+  turn: string
 }

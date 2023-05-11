@@ -8,14 +8,14 @@ import {
   onValue,
 } from 'firebase/database'
 import { Ref, ref } from 'vue'
-import { Lobby } from '@/types'
+import { Card, Lobby } from '@/types'
 
 interface UseLobby {
   lobby: Ref<Lobby | null>
   isLobbyReady: Ref<boolean>
   listenLobby: (lobbyId: string) => void
   getLobby: (lobbyId: string) => Promise<Lobby | null>
-  startLobby: (lobbyId: string, creator: string, category: string) => void
+  startLobby: (lobbyId: string, creator: string, category: string, cards: Card[], activeCard: null) => void
   joinLobby: (lobbyId: string, guest: string) => void
 }
 
@@ -54,13 +54,18 @@ export const useLobby = (): UseLobby => {
   const startLobby = (
     lobbyId: string,
     creator: string,
-    category: string
+    category: string,
+    cards: Card[],
+    activeCard: null
   ): void => {
     set(firebaseRef(rtdb, `lobby/${lobbyId}`), {
       ID: lobbyId,
       category,
       players: [creator],
       score: { player1: 0, player2: 0 },
+      cards,
+      activeCard,
+      turn: creator
     })
   }
 

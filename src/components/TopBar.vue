@@ -11,6 +11,7 @@ const { lobby } = useLobby()
   >
     <p
       class="flex-1"
+      :class="[lobby.turn === lobby.players[0] ? 'border-solid border-2 border-red-700' : '']"
     >
       {{ lobby.players[0] }}
     </p>
@@ -19,6 +20,7 @@ const { lobby } = useLobby()
     </p>
     <p
       class="flex-1"
+      :class="[lobby.turn === lobby.players[1] ? 'border-solid border-2 border-red-700' : '']"
     >
       {{ lobby.players[1] }}
     </p>
