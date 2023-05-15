@@ -4,17 +4,14 @@ import { Card, Pair } from '@/types'
 interface UseCards {
   cards: Ref<Card[]>
   pairs: Ref<Pair[]>
-  shuffledAllCards: Ref<Card[]>
-  activeCard: Ref<Card | null>
+  shuffledCards: Ref<Card[]>
   setCards: (value: Card[]) => void
   setPairs: (allCards: Card[]) => void
-  setActiveCard: (card: Card | null) => void
 }
 
 const cards = ref<Card[]>([])
 const pairs = ref<Pair[]>([])
-const shuffledAllCards = ref<Card[]>([])
-const activeCard = ref<Card | null>(null)
+const shuffledCards = ref<Card[]>([])
 
 export const useCards = (): UseCards => {
   
@@ -28,17 +25,11 @@ export const useCards = (): UseCards => {
     })
   }
 
-  const setActiveCard = (card: Card | null): void => {
-    activeCard.value = card
-  }
-
   return {
     cards,
     pairs,
-    shuffledAllCards,
-    activeCard,
+    shuffledCards,
     setCards,
     setPairs,
-    setActiveCard,
   }
 }

@@ -12,7 +12,7 @@ import { Views } from '@/types'
 
 const { selectedCategory, setSelectedPairsOption } = useCategories()
 const { getCategoryCards } = useApiClient()
-const { cards, pairs, setPairs } = useCards()
+const { cards, pairs, setPairs, shuffledCards } = useCards()
 const { user } = useUsers()
 const { lobby, isLobbyReady, startLobby, getLobby, listenLobby } = useLobby()
 const route = useRoute()
@@ -42,7 +42,7 @@ onBeforeMount(async () => {
     setPairs(cards.value)
     shuffleArray(pairs.value)
 
-    startLobby(routeId, user.value.username, selectedCategory.value.name)
+    startLobby(routeId, user.value.username, selectedCategory.value.name, shuffledCards.value, null)
   }
 })
 </script>
