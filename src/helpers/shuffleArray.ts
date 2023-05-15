@@ -1,24 +1,24 @@
 import { useCards } from '@/composables/useCards'
 import { Pair } from '@/types'
 
-const { shuffledAllCards } = useCards()
+const { shuffledCards } = useCards()
 
 export const shuffleArray = (allPairs: Pair[]): void => {
   allPairs.forEach((pair) => {
-    shuffledAllCards.value.push(pair.card1, pair.card2)
+    shuffledCards.value.push(pair.card1, pair.card2)
   })
 
-  for(let i = 0; i < shuffledAllCards.value.length; i++) {   
-    shuffledAllCards.value[i] = {
-      ...shuffledAllCards.value[i],
+  for(let i = 0; i < shuffledCards.value.length; i++) {   
+    shuffledCards.value[i] = {
+      ...shuffledCards.value[i],
       id: crypto.randomUUID()
     }
   }
   
-  for (let i = shuffledAllCards.value.length - 1; i > 0; i--) {
+  for (let i = shuffledCards.value.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    const tmp = shuffledAllCards.value[i]
-    shuffledAllCards.value[i] = shuffledAllCards.value[j]
-    shuffledAllCards.value[j] = tmp
+    const tmp = shuffledCards.value[i]
+    shuffledCards.value[i] = shuffledCards.value[j]
+    shuffledCards.value[j] = tmp
   }
 }

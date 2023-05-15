@@ -1,40 +1,47 @@
 <script lang="ts" setup>
-import { Card } from '@/types'
+import { Card, Players } from '@/types'
 import TopBar from '@/components/TopBar.vue'
 import GameCard from '@/components/GameCard.vue'
 import { useCategories } from '@/composables/useCategories'
-import { useCards } from '@/composables/useCards'
 import { useLobby } from '@/composables/useLobby'
 import { delay } from '@/helpers'
+import { useGame } from '@/composables/useGame'
+import { FLIP_CARD_OPTIONS } from '@/constants'
 
 const { selectedPairsOption } = useCategories()
-const {
-  shuffledAllCards,
-  activeCard,
-  setActiveCard,
-} = useCards()
 const { lobby } = useLobby()
+const { flipCard, setActiveCard, setActivePlayer } = useGame(lobby.value?.ID)
+
+const retriveUser  = localStorage.getItem('user') as string
+const user = JSON.parse(retriveUser)
+const players = lobby.value?.players as Players
 
 const clickCard = async (card: Card, index: number): Promise<void> => {
+  if (!lobby.value) return
+  if (user.username !== lobby.value.turn) return
+  if (!players) return
   if (card.isFlipped) return
 
-  shuffledAllCards.value[index].isFlipped = true
+  flipCard(index, FLIP_CARD_OPTIONS.flip)
 
-  if (!activeCard.value) {
+  if (!lobby.value.activeCard) {
     setActiveCard(card)
     return
   }
 
-  if (activeCard.value.pairingKey === card.pairingKey) {
+  if (lobby.value.activeCard.pairingKey === card.pairingKey) {
     // TODO
     // Save pair in live db
   } else {
-    const oldIndex = shuffledAllCards.value.findIndex(
-      (el) => el.id === activeCard.value?.id
+    // change players - to refactor
+    if(!players.player1 || !players.player2) return
+    setActivePlayer(user.username === players.player1 ? players.player2 : players.player1)
+    const oldIndex = lobby.value.cards.findIndex(
+      (el) => el.id === lobby.value?.activeCard.id
     )
     await delay(1000)
-    shuffledAllCards.value[oldIndex].isFlipped = false
-    shuffledAllCards.value[index].isFlipped = false
+    flipCard(oldIndex, FLIP_CARD_OPTIONS.unflip)
+    flipCard(index, FLIP_CARD_OPTIONS.unflip)
   }
   setActiveCard(null)
 }
@@ -52,7 +59,7 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
     <top-bar />
     <div class="grid grid-cols-4 gap-6 mt-8">
       <game-card
-        v-for="(card, index) in shuffledAllCards"
+        v-for="(card, index) in lobby.cards"
         :key="index"
         :card="card"
         @click="clickCard(card, index)"
