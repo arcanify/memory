@@ -29,7 +29,7 @@ export const useLobby = (): UseLobby => {
       const data = snapshot.val() as Lobby
       lobby.value = data
 
-      if (data && data.players.length === 2) {
+      if (data.players.player1 && data.players.player2) {
         isLobbyReady.value = true
       }
     })
@@ -61,7 +61,7 @@ export const useLobby = (): UseLobby => {
     set(firebaseRef(rtdb, `lobby/${lobbyId}`), {
       ID: lobbyId,
       category,
-      players: [creator],
+      players: {player1: creator},
       score: { player1: 0, player2: 0 },
       cards,
       activeCard,
@@ -71,7 +71,7 @@ export const useLobby = (): UseLobby => {
 
   const joinLobby = (lobbyId: string, guest: string): void => {
     update(child(firebaseRef(rtdb), `lobby/${lobbyId}/players`), {
-      1: guest,
+      player2: guest,
     })
   }
 

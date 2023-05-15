@@ -1,4 +1,4 @@
-import { Score } from '@/types'
+import { Score, Players } from '@/types'
 
 export enum Collections {
   CATEGORY = 'category',
@@ -28,7 +28,7 @@ export interface Card {
 export interface Lobby {
   ID: string
   category: string
-  players: string[]
+  players: Players
   score: Score
   cards: Card[]
   activeCard: Card

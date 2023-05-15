@@ -5,6 +5,11 @@ export interface Score {
   player2: number | null
 }
 
+export interface Players {
+  player1: string | null
+  player2: string | null
+}
+
 export interface Pair {
   card1: Card
   card2: Card

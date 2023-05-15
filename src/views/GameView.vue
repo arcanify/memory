@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Card } from '@/types'
+import { Card, Players } from '@/types'
 import TopBar from '@/components/TopBar.vue'
 import GameCard from '@/components/GameCard.vue'
 import { useCategories } from '@/composables/useCategories'
@@ -14,12 +14,12 @@ const { flipCard, setActiveCard, setActivePlayer } = useGame(lobby.value?.ID)
 
 const retriveUser  = localStorage.getItem('user') as string
 const user = JSON.parse(retriveUser)
-const users = lobby.value?.players
+const players = lobby.value?.players as Players
 
 const clickCard = async (card: Card, index: number): Promise<void> => {
   if (!lobby.value) return
   if (user.username !== lobby.value.turn) return
-  if (!users) return
+  if (!players) return
   if (card.isFlipped) return
 
   flipCard(index, FLIP_CARD_OPTIONS.flip)
@@ -34,7 +34,8 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
     // Save pair in live db
   } else {
     // change players - to refactor
-    setActivePlayer(user.username === users[0] ? users[1] : users[0])
+    if(!players.player1 || !players.player2) return
+    setActivePlayer(user.username === players.player1 ? players.player2 : players.player1)
     const oldIndex = lobby.value.cards.findIndex(
       (el) => el.id === lobby.value?.activeCard.id
     )

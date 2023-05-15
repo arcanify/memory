@@ -11,18 +11,18 @@ const { lobby } = useLobby()
   >
     <p
       class="flex-1"
-      :class="[lobby.turn === lobby.players[0] ? 'border-solid border-2 border-red-700' : '']"
+      :class="[lobby.turn === lobby.players.player1 ? 'border-solid border-2 border-red-700' : '']"
     >
-      {{ lobby.players[0] }}
+      {{ lobby.players.player1 }}
     </p>
     <p class="text-2xl font-medium flex-1">
       {{ lobby.score.player1 }} : {{ lobby.score.player2 }}
     </p>
     <p
       class="flex-1"
-      :class="[lobby.turn === lobby.players[1] ? 'border-solid border-2 border-red-700' : '']"
+      :class="[lobby.turn === lobby.players.player2 ? 'border-solid border-2 border-red-700' : '']"
     >
-      {{ lobby.players[1] }}
+      {{ lobby.players.player2 }}
     </p>
   </div>
 </template>
