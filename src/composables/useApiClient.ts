@@ -1,7 +1,7 @@
-import { User, Category, Views, Collections, Card } from '@/types'
+import { Category, Views, Collections, Card } from '@/types'
 import { useRouter } from 'vue-router'
 import { db } from '@/firebase'
-import { collection,where, query, addDoc, getDocs } from 'firebase/firestore'
+import { collection,where, query, getDocs } from 'firebase/firestore'
 import { useUsers } from '@/composables/useUsers'
 import { useCards } from '@/composables/useCards'
 import { useLobby } from '@/composables/useLobby'
@@ -19,18 +19,9 @@ export const useApiClient = (): UseApiClient => {
   const router = useRouter()
   const { lobby, joinLobby } = useLobby()
 
-  const createUser = async (username: string): Promise<void> => {
-    addDoc(collection(db, Collections.USER), {
-      username,
-    })
-    const q = query(collection(db, Collections.USER), where('username', '==', username))
-    const querySnapshot = await getDocs(q)
-    
-    querySnapshot.forEach((doc) => {
-      setUser(doc.data() as User)
-    })
-
+  const createUser = async (username: string): Promise<void> => {      
     if(!lobby.value) {
+      setUser({username})
       router.push({
         name: Views.SELECT_CATEGORY,
       })

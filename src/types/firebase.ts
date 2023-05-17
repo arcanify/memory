@@ -2,7 +2,6 @@ import { Score, Players } from '@/types'
 
 export enum Collections {
   CATEGORY = 'category',
-  USER = 'user',
   CARD = 'card'
 }
 
