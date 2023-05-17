@@ -27,6 +27,8 @@ export const useLobby = (): UseLobby => {
     const playersRef = firebaseRef(rtdb, `lobby/${lobbyId}`)
     onValue(playersRef, (snapshot) => {
       const data = snapshot.val() as Lobby
+      
+      if(!data) return
       lobby.value = data
 
       if (data.players.player1 && data.players.player2) {

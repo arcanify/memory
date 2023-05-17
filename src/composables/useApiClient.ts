@@ -48,12 +48,12 @@ export const useApiClient = (): UseApiClient => {
   const getCategoryCards = async (categoryKey: string): Promise<void> => {
     const q = query(collection(db, Collections.CARD), where('categoryKey', '==', categoryKey))
     const querySnapshot = await getDocs(q)
-    const tmpCards: Card[] = []
+    const cards: Card[] = []
     
     querySnapshot.forEach((doc) => {
-      tmpCards.push(doc.data() as Card)
+      cards.push(doc.data() as Card)
     })
-    setCards(tmpCards)
+    setCards(cards)
   }
 
   const getAllCategories = async (): Promise<Category[] | null> => {

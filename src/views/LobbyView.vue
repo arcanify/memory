@@ -7,12 +7,12 @@ import { useCards } from '@/composables/useCards'
 import { useRoute, useRouter } from 'vue-router'
 import { useUsers } from '@/composables/useUsers'
 import { useLobby } from '@/composables/useLobby'
-import { shuffleArray } from '@/helpers'
+import { shuffleCards } from '@/helpers'
 import { Views } from '@/types'
 
 const { selectedCategory, setSelectedPairsOption } = useCategories()
 const { getCategoryCards } = useApiClient()
-const { cards, pairs, setPairs, shuffledCards } = useCards()
+const { cards, shuffledCards } = useCards()
 const { user } = useUsers()
 const { lobby, isLobbyReady, startLobby, getLobby, listenLobby } = useLobby()
 const route = useRoute()
@@ -39,8 +39,7 @@ onBeforeMount(async () => {
     if (user.value === null) return
 
     await getCategoryCards(selectedCategory.value.key)
-    setPairs(cards.value)
-    shuffleArray(pairs.value)
+    shuffleCards(cards.value)
 
     startLobby(routeId, user.value.username, selectedCategory.value.name, shuffledCards.value, null)
   }
