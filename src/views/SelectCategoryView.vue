@@ -1,11 +1,18 @@
 <script lang="ts" setup>
 import { Category, Views } from '@/types'
 import CategoryCard from '@/components/CategoryCard.vue'
+import { useApiClient } from '@/composables/useApiClient'
 import { useCategories } from '@/composables/useCategories'
 import { useRouter } from 'vue-router'
+import { onBeforeMount } from 'vue'
 
 const router = useRouter()
 const { categories, setSelectedCategory } = useCategories()
+
+onBeforeMount(async() => {
+  const { getAllCategories } = useApiClient()
+  categories.value = await getAllCategories()
+})
 
 const selectCategory = (category: Category): void => {
   setSelectedCategory(category)
