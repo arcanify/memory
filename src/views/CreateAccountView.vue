@@ -10,13 +10,13 @@ const username = ref<string>('')
 </script>
 
 <template>
-  <div class="container flex flex-col gap-16 items-center mt-44 w-full">
+  <div class="container flex flex-col gap-16 items-center mt-44 w-full px-4">
     <img
-      class="w-5/8"
+      class="max-w-[200px] w-8/12"
       src="@/assets/logo.png"
     >
     <form
-      class="relative flex flex-col gap-4"
+      class="relative flex flex-col gap-4 max-w-xs w-full"
       @submit.prevent="createUser(username)"
     >
       <input
@@ -35,7 +35,7 @@ const username = ref<string>('')
         {{ $t('username') }}
       </label>
       <button
-        class="w-7/8 h-14 bg-[var(--main)] text-white rounded"
+        class="h-14 bg-[var(--main)] text-white rounded"
         type="submit"
       >
         {{ lobby ? $t('joinLobby') : $t('startGame') }}

@@ -20,17 +20,17 @@ const selectCategory = (category: Category): void => {
 
 <template>
   <div
-    class="container flex flex-col text-center gap-16 items-center mt-44 w-full"
+    class="container flex flex-col text-center gap-16 items-center mt-44 w-full px-4"
   >
     <img
-      class="w-5/8"
+      class="max-w-[200px] w-8/12"
       src="@/assets/logo.png"
     >
     <div>
       <h1 class="text-3xl font-bold p-8 text-[var(--main)]">
         {{ $t('selectCategory') }}
       </h1>
-      <div class="grid grid-cols-1 gap-4">
+      <div class="grid grid-cols-1 gap-4 p-4">
         <category-card
           v-for="(category, index) in categories"
           :key="index"
