@@ -27,6 +27,7 @@ export const useApiClient = (): UseApiClient => {
       })
     } else {
       joinLobby(lobby.value.ID, username)
+      setUser({username})
       router.push({
         name: Views.LOBBY,
         params: {

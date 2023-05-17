@@ -32,4 +32,5 @@ export interface Lobby {
   cards: Card[]
   activeCard: Card
   turn: string
+  isGameFinished: boolean
 }
