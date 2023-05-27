@@ -9,9 +9,12 @@ const { lobby } = useLobby()
     v-if="lobby"
     class="container rounded flex justify-between text-xl items-center py-2 px-4 w-11/12 drop-shadow-md shadow-xl"
   >
+    <div
+      class="w-6 h-6 bg-red-600 rounded-full"
+      :class="[lobby.turn === lobby.players.player1 ? 'visible' : 'invisible']"
+    />
     <p
       class="flex-1"
-      :class="[lobby.turn === lobby.players.player1 ? 'border-solid border-2 border-red-700' : '']"
     >
       {{ lobby.players.player1 }}
     </p>
@@ -20,9 +23,12 @@ const { lobby } = useLobby()
     </p>
     <p
       class="flex-1"
-      :class="[lobby.turn === lobby.players.player2 ? 'border-solid border-2 border-red-700' : '']"
     >
       {{ lobby.players.player2 }}
     </p>
+    <div
+      class="w-6 h-6 bg-red-600 rounded-full"
+      :class="[lobby.turn === lobby.players.player2 ? 'visible' : 'invisible']"
+    />
   </div>
 </template>
