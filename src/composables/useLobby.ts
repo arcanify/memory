@@ -110,12 +110,10 @@ export const useLobby = (): UseLobby => {
   const addPoint = (lobbyId: string, player: string): void => {
     if(!lobby.value) return
     if(player === lobby.value.players.player1) {
-        console.log('git')
         update(child(firebaseRef(rtdb), `lobby/${lobbyId}/score`), {
           player1: increment(1),
         })
       } else {
-        console.log('git')
         update(child(firebaseRef(rtdb), `lobby/${lobbyId}/score`), {
           player2: increment(1),
         })

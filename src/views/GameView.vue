@@ -1,16 +1,15 @@
 <script lang="ts" setup>
-import { Card, Players, Views } from '@/types'
+import { Card, Players } from '@/types'
 import TopBar from '@/components/TopBar.vue'
 import GameCard from '@/components/GameCard.vue'
+import EndGameWindow from '@/components/EndGameWindow.vue'
 import { useLobby } from '@/composables/useLobby'
 import { delay } from '@/helpers'
 import { useGame } from '@/composables/useGame'
 import { FLIP_CARD_OPTIONS } from '@/constants'
-import { useRouter } from 'vue-router'
 import { onBeforeMount } from 'vue'
 
 const { lobby, removeLobby, listenLobby, addPoint } = useLobby()
-const router = useRouter()
 const { flipCard, setActiveCard, setActivePlayer } = useGame(lobby.value?.ID)
 
 const retriveUser = localStorage.getItem('user') as string
@@ -21,14 +20,6 @@ onBeforeMount(() => {
   if (!lobby.value) return
   listenLobby(lobby.value.ID)
 })
-
-const endGame = async (): Promise<void> => {
-  localStorage.clear()
-  lobby.value = null
-  router.push({
-    name: Views.HOME,
-  })
-}
 
 const clickCard = async (card: Card, index: number): Promise<void> => {
   if (!lobby.value) return
@@ -44,16 +35,15 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
   }
 
   if (lobby.value.activeCard.pairingKey === card.pairingKey) {
-    // TO DO points adding
     addPoint(lobby.value.ID, lobby.value.turn)
-    //
-    // Remove lobby at the end
+
     if (lobby.value.isGameFinished) {
+      const overlay = document.querySelector('.overlay')
+      overlay?.classList.remove('hidden')
       await delay(1000)
       removeLobby(lobby.value.ID)
     }
   } else {
-    // change players - to refactor
     if (!players.player1 || !players.player2) return
     setActivePlayer(
       user.username === players.player1 ? players.player2 : players.player1
@@ -70,19 +60,11 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
 </script>
 
 <template>
+  <div class="overlay hidden" />
   <div
     v-if="lobby"
     class="container flex flex-col text-center items-center"
   >
-    <div v-if="lobby?.isGameFinished">
-      <p>GAME OVER</p>
-      <button
-        class="w-14 h-14 bg-[var(--main)] text-white rounded"
-        @click="endGame"
-      >
-        Home
-      </button>
-    </div>
     <h1 class="text-3xl font-bold p-8 text-[var(--main)]">
       {{ lobby.category }}
     </h1>
@@ -96,4 +78,36 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
       />
     </div>
   </div>
+  <Transition
+    name="fade"
+  >
+    <EndGameWindow 
+      v-if="lobby?.isGameFinished" 
+    />
+  </Transition>
 </template>
+
+<style lang="scss">
+.fade-enter-active {
+  transition: opacity 1s ease-out;
+}
+
+.fade-enter-from {
+  opacity: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  z-index: 5;
+}
+</style>

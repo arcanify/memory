@@ -71,10 +71,10 @@ onBeforeMount(async () => {
       {{ lobby.category }}
     </h2>
     <p v-if="!isLobbyReady">
-      Copy link and send it to your friend
+      {{ $t('lobbyShareInstruction') }}
     </p>
     <p v-if="isLobbyReady">
-      Player "{{ lobby.players.player2 }}" joined the lobby
+      {{ $t('player') }} "{{ lobby.players.player2 }}" {{ $t('joinedLobbyInfo') }}
     </p>
     <div class="flex gap-4">
       <button
@@ -82,7 +82,7 @@ onBeforeMount(async () => {
         class="w-28 h-14 bg-[var(--main)] text-white rounded"
         @click="startGame"
       >
-        Start Game
+      {{ $t('startGame') }}
       </button>
     </div>
   </div>
