@@ -1,5 +1,4 @@
-import { onBeforeMount, ref, Ref } from 'vue'
-import { useApiClient } from '@/composables/useApiClient'
+import { ref, Ref } from 'vue'
 import { Category, StorageKey, Views } from '@/types'
 import { useRouter } from 'vue-router'
 import { useLocalStorage } from '@/composables/useLocalStorage'
@@ -18,12 +17,7 @@ const selectedPairsOption = ref<number | null>(null)
 
 export const useCategories = (): UseCategories => {
   const router = useRouter()
-  const { getAllCategories } = useApiClient()
   const { setItem } = useLocalStorage()
-  
-  onBeforeMount(async () => {
-    categories.value = await getAllCategories()
-  })
 
   const setSelectedCategory = (category: Category): void => {
     selectedCategory.value = category

@@ -1,12 +1,9 @@
 import { useCards } from '@/composables/useCards'
-import { Pair } from '@/types'
+import { Card } from '@/types'
 
-const { shuffledCards } = useCards()
-
-export const shuffleArray = (allPairs: Pair[]): void => {
-  allPairs.forEach((pair) => {
-    shuffledCards.value.push(pair.card1, pair.card2)
-  })
+export const shuffleCards = (allCards: Card[]): void => {
+  const { shuffledCards } = useCards()
+  shuffledCards.value = allCards
 
   for(let i = 0; i < shuffledCards.value.length; i++) {   
     shuffledCards.value[i] = {

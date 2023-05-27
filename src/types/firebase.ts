@@ -2,7 +2,6 @@ import { Score, Players } from '@/types'
 
 export enum Collections {
   CATEGORY = 'category',
-  USER = 'user',
   CARD = 'card'
 }
 
@@ -33,4 +32,5 @@ export interface Lobby {
   cards: Card[]
   activeCard: Card
   turn: string
+  isGameFinished: boolean
 }

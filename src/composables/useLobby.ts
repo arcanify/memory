@@ -6,6 +6,7 @@ import {
   set,
   update,
   onValue,
+  remove,
 } from 'firebase/database'
 import { Ref, ref } from 'vue'
 import { Card, Lobby } from '@/types'
@@ -17,6 +18,7 @@ interface UseLobby {
   getLobby: (lobbyId: string) => Promise<Lobby | null>
   startLobby: (lobbyId: string, creator: string, category: string, cards: Card[], activeCard: null) => void
   joinLobby: (lobbyId: string, guest: string) => void
+  removeLobby: (lobbyId: string) => void
 }
 
 const lobby = ref<Lobby | null>(null)
@@ -24,14 +26,37 @@ const isLobbyReady = ref<boolean>(false)
 
 export const useLobby = (): UseLobby => {
   const listenLobby = (lobbyId: string): void => {
-    const playersRef = firebaseRef(rtdb, `lobby/${lobbyId}`)
-    onValue(playersRef, (snapshot) => {
+    const lobbyRef = firebaseRef(rtdb, `lobby/${lobbyId}`)
+    onValue(lobbyRef, (snapshot) => {
       const data = snapshot.val() as Lobby
+      
+      if(!data) return
       lobby.value = data
 
       if (data.players.player1 && data.players.player2) {
         isLobbyReady.value = true
       }
+    })
+
+    const cardsRef = firebaseRef(rtdb, `lobby/${lobbyId}/cards`)
+    onValue(cardsRef, (snapshot) => {
+      const cards = ref<Card[]>([])
+      cards.value = snapshot.val() as Card[]
+
+      if(!cards.value) return
+      
+      const cardsStates = [] as boolean[]
+      const isFlipped = (cardFlipState: boolean): boolean => {
+        return cardFlipState
+      }
+
+      cards.value.forEach(card => {
+        cardsStates.push(card.isFlipped)
+      })
+
+      update(child(firebaseRef(rtdb), `lobby/${lobbyId}`), {
+        isGameFinished: cardsStates.every(isFlipped)
+      })
     })
   }
 
@@ -65,7 +90,8 @@ export const useLobby = (): UseLobby => {
       score: { player1: 0, player2: 0 },
       cards,
       activeCard,
-      turn: creator
+      turn: creator,
+      isGameFinished: false
     })
   }
 
@@ -75,6 +101,10 @@ export const useLobby = (): UseLobby => {
     })
   }
 
+  const removeLobby = (lobbyId: string): void => {
+    remove(child(firebaseRef(rtdb), `lobby/${lobbyId}`))
+  }
+
   return {
     lobby,
     isLobbyReady,
@@ -82,5 +112,6 @@ export const useLobby = (): UseLobby => {
     getLobby,
     startLobby,
     joinLobby,
+    removeLobby
   }
 }
