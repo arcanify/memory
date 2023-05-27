@@ -7,6 +7,7 @@ import {
   update,
   onValue,
   remove,
+  increment
 } from 'firebase/database'
 import { Ref, ref } from 'vue'
 import { Card, Lobby } from '@/types'
@@ -19,6 +20,7 @@ interface UseLobby {
   startLobby: (lobbyId: string, creator: string, category: string, cards: Card[], activeCard: null) => void
   joinLobby: (lobbyId: string, guest: string) => void
   removeLobby: (lobbyId: string) => void
+  addPoint: (lobbyId: string, player: string) => void
 }
 
 const lobby = ref<Lobby | null>(null)
@@ -105,6 +107,21 @@ export const useLobby = (): UseLobby => {
     remove(child(firebaseRef(rtdb), `lobby/${lobbyId}`))
   }
 
+  const addPoint = (lobbyId: string, player: string): void => {
+    if(!lobby.value) return
+    if(player === lobby.value.players.player1) {
+        console.log('git')
+        update(child(firebaseRef(rtdb), `lobby/${lobbyId}/score`), {
+          player1: increment(1),
+        })
+      } else {
+        console.log('git')
+        update(child(firebaseRef(rtdb), `lobby/${lobbyId}/score`), {
+          player2: increment(1),
+        })
+      }
+  }
+
   return {
     lobby,
     isLobbyReady,
@@ -113,5 +130,6 @@ export const useLobby = (): UseLobby => {
     startLobby,
     joinLobby,
     removeLobby,
+    addPoint
   }
 }

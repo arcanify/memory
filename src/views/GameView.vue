@@ -9,7 +9,7 @@ import { FLIP_CARD_OPTIONS } from '@/constants'
 import { useRouter } from 'vue-router'
 import { onBeforeMount } from 'vue'
 
-const { lobby, removeLobby, listenLobby } = useLobby()
+const { lobby, removeLobby, listenLobby, addPoint } = useLobby()
 const router = useRouter()
 const { flipCard, setActiveCard, setActivePlayer } = useGame(lobby.value?.ID)
 
@@ -45,7 +45,7 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
 
   if (lobby.value.activeCard.pairingKey === card.pairingKey) {
     // TO DO points adding
-
+    addPoint(lobby.value.ID, lobby.value.turn)
     //
     // Remove lobby at the end
     if (lobby.value.isGameFinished) {

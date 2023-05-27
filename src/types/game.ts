@@ -1,6 +1,6 @@
 export interface Score {
-  player1: number | null
-  player2: number | null
+  player1: number
+  player2: number
 }
 
 export interface Players {
