@@ -2,7 +2,6 @@
 import { Card, Players, Views } from '@/types'
 import TopBar from '@/components/TopBar.vue'
 import GameCard from '@/components/GameCard.vue'
-import { useCategories } from '@/composables/useCategories'
 import { useLobby } from '@/composables/useLobby'
 import { delay } from '@/helpers'
 import { useGame } from '@/composables/useGame'
@@ -10,8 +9,7 @@ import { FLIP_CARD_OPTIONS } from '@/constants'
 import { useRouter } from 'vue-router'
 import { onBeforeMount } from 'vue'
 
-const { selectedPairsOption } = useCategories()
-const { lobby, removeLobby, listenLobby } = useLobby()
+const { lobby, removeLobby, listenLobby, addPoint } = useLobby()
 const router = useRouter()
 const { flipCard, setActiveCard, setActivePlayer } = useGame(lobby.value?.ID)
 
@@ -47,7 +45,7 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
 
   if (lobby.value.activeCard.pairingKey === card.pairingKey) {
     // TO DO points adding
-
+    addPoint(lobby.value.ID, lobby.value.turn)
     //
     // Remove lobby at the end
     if (lobby.value.isGameFinished) {
@@ -72,17 +70,24 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
 </script>
 
 <template>
-  <div v-if="lobby" class="container flex flex-col text-center items-center">
+  <div
+    v-if="lobby"
+    class="container flex flex-col text-center items-center"
+  >
     <div v-if="lobby?.isGameFinished">
       <p>GAME OVER</p>
-      <button class="w-14 h-14 bg-[var(--main)] text-white rounded" @click="endGame">Home</button>
+      <button
+        class="w-14 h-14 bg-[var(--main)] text-white rounded"
+        @click="endGame"
+      >
+        Home
+      </button>
     </div>
     <h1 class="text-3xl font-bold p-8 text-[var(--main)]">
       {{ lobby.category }}
     </h1>
-    <h2>{{ selectedPairsOption }} {{ $t('pairs') }}</h2>
     <top-bar />
-    <div class="grid grid-cols-4 gap-6 mt-8">
+    <div class="grid grid-cols-4 md:grid-cols-6 gap-4 md:gap-6 lg:gap-12 mt-8">
       <game-card
         v-for="(card, index) in lobby.cards"
         :key="index"
