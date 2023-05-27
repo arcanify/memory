@@ -9,24 +9,14 @@ import {
   remove,
   increment
 } from 'firebase/database'
-import { Ref, ref } from 'vue'
+import { ref } from 'vue'
 import { Card, Lobby } from '@/types'
-
-interface UseLobby {
-  lobby: Ref<Lobby | null>
-  isLobbyReady: Ref<boolean>
-  listenLobby: (lobbyId: string) => void
-  getLobby: (lobbyId: string) => Promise<Lobby | null>
-  startLobby: (lobbyId: string, creator: string, category: string, cards: Card[], activeCard: null) => void
-  joinLobby: (lobbyId: string, guest: string) => void
-  removeLobby: (lobbyId: string) => void
-  addPoint: (lobbyId: string, player: string) => void
-}
+import type { UseLobbyInterface } from '@/types'
 
 const lobby = ref<Lobby | null>(null)
 const isLobbyReady = ref<boolean>(false)
 
-export const useLobby = (): UseLobby => {
+export const useLobby = (): UseLobbyInterface => {
   const listenLobby = (lobbyId: string): void => {
     const lobbyRef = firebaseRef(rtdb, `lobby/${lobbyId}`)
     onValue(lobbyRef, (snapshot) => {
