@@ -1,6 +1,6 @@
 import { ref, Ref } from 'vue'
 import { Card } from '@/types'
-import { doubleCards } from '@/helpers/doubleCards'
+import { doubleCards } from '@/helpers'
 
 interface UseCards {
   cards: Ref<Card[]>
