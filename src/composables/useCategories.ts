@@ -1,22 +1,17 @@
 import { ref, Ref } from 'vue'
-import { Category, StorageKey, Views } from '@/types'
-import { useRouter } from 'vue-router'
+import { Category, StorageKey } from '@/types'
 import { useLocalStorage } from '@/composables/useLocalStorage'
 
 interface UseCategories {
   categories: Ref<Category[] | null>
   selectedCategory: Ref<Category | null>
-  selectedPairsOption: Ref<number | null>
   setSelectedCategory: (category: Category) => void
-  setSelectedPairsOption: (pairsOption: number) => void
 }
 
 const categories = ref<Category[] | null>(null)
 const selectedCategory = ref<Category | null>(null)
-const selectedPairsOption = ref<number | null>(null)
 
 export const useCategories = (): UseCategories => {
-  const router = useRouter()
   const { setItem } = useLocalStorage()
 
   const setSelectedCategory = (category: Category): void => {
@@ -24,18 +19,9 @@ export const useCategories = (): UseCategories => {
     setItem<Category>(StorageKey.CATEGORY, selectedCategory.value)
   }
 
-  const setSelectedPairsOption = (pairsOption: number): void => {
-    selectedPairsOption.value = pairsOption
-    router.push({
-      name: Views.GAME,
-    })
-  }
-
   return {
     categories,
     selectedCategory,
-    selectedPairsOption,
     setSelectedCategory,
-    setSelectedPairsOption
   }
 }

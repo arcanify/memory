@@ -112,6 +112,6 @@ export const useLobby = (): UseLobby => {
     getLobby,
     startLobby,
     joinLobby,
-    removeLobby
+    removeLobby,
   }
 }
