@@ -45,7 +45,10 @@ resultCheck()
           >
             {{ result === "DRAW" ? $t('draw') : $t('winner') }}
           </h2>
-          <h3 class="text-4xl font-bold p-4 text-[var(--main)]" v-if="result !== 'draw'">
+          <h3
+            v-if="result !== 'draw'"
+            class="text-4xl font-bold p-4 text-[var(--main)]"
+          >
             {{ result }}
           </h3>
           <h4 class="text-xl font-medium p-2">

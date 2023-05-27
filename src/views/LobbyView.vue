@@ -82,7 +82,7 @@ onBeforeMount(async () => {
         class="w-28 h-14 bg-[var(--main)] text-white rounded"
         @click="startGame"
       >
-      {{ $t('startGame') }}
+        {{ $t('startGame') }}
       </button>
     </div>
   </div>
