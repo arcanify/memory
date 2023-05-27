@@ -1,11 +1,7 @@
 import { StorageKey } from '@/types'
+import type { UseLocalStorageInterface } from '@/types'
 
-interface UseLocalStorage {
-  setItem: <T>(key: StorageKey, data: T) => void
-  getItem: <T>(key: StorageKey) => T | null
-}
-
-export const useLocalStorage = (): UseLocalStorage => {
+export const useLocalStorage = (): UseLocalStorageInterface => {
   const setItem = <T>(key: StorageKey, data: T): void => {
     localStorage.setItem(key, JSON.stringify(data))
   }

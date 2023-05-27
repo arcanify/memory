@@ -5,18 +5,12 @@ import {
   ref as firebaseRef,
   update,
 } from 'firebase/database'
-import { Ref, ref } from 'vue'
-
-interface UseGame {
-  activeCard: Ref<Card | null>
-  flipCard: (card: number, action: boolean) => void
-  setActiveCard: (card: Card | null) => void
-  setActivePlayer: (player: string) => void
-}
+import { ref } from 'vue'
+import type { UseGameInterface } from '@/types'
 
 const activeCard = ref<Card | null>(null)
 
-export const useGame = (lobbyId: string | undefined): UseGame => {
+export const useGame = (lobbyId: string | undefined): UseGameInterface => {
 
   const flipCard = (card: number, action: boolean): void => {
     update(child(firebaseRef(rtdb), `lobby/${lobbyId}/cards/${card}`), {

@@ -1,11 +1,7 @@
 <script lang="ts" setup>
-import { Category } from '@/types'
+import type { CategoryCardInterface } from '@/types'
 
-interface Props {
-  category: Category
-}
-
-defineProps<Props>()
+defineProps<CategoryCardInterface>()
 </script>
 
 <template>

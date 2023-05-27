@@ -1,17 +1,12 @@
-import { ref, Ref } from 'vue'
+import { ref } from 'vue'
 import { Card } from '@/types'
 import { doubleCards } from '@/helpers'
-
-interface UseCards {
-  cards: Ref<Card[]>
-  shuffledCards: Ref<Card[]>
-  setCards: (value: Card[]) => void
-}
+import type { UseCardsInterface } from '@/types'
 
 const cards = ref<Card[]>([])
 const shuffledCards = ref<Card[]>([])
 
-export const useCards = (): UseCards => {
+export const useCards = (): UseCardsInterface => {
   
   const setCards = (value: Card[]): void => {
     cards.value = doubleCards(value)
