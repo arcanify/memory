@@ -4,6 +4,12 @@
   "selectCategory": "Select Category",
   "notFound": "NOT FOUND",
   "lobby": "Lobby",
+  "home": "Home",
   "joinLobby": "Join Lobby",
-  "pairs": "Pairs"
+  "pairs": "Pairs",
+  "draw": "DRAW",
+  "winner": "WINNER",
+  "player": "Player",
+  "joinedLobbyInfo": "joined the lobby",
+  "lobbyShareInstruction": "Copy link and send it to your friend"
 }

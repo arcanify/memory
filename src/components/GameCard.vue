@@ -1,11 +1,7 @@
 <script lang="ts" setup>
-import { Card } from '@/types'
+import type { GameCard } from '@/types'
 
-interface Props {
-  card: Card
-}
-
-defineProps<Props>()
+defineProps<GameCard>()
 </script>
 
 <template>

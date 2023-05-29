@@ -5,14 +5,8 @@ import {
   ref as firebaseRef,
   update,
 } from 'firebase/database'
-import { Ref, ref } from 'vue'
-
-interface UseGame {
-  activeCard: Ref<Card | null>
-  flipCard: (card: number, action: boolean) => void
-  setActiveCard: (card: Card | null) => void
-  setActivePlayer: (player: string) => void
-}
+import { ref } from 'vue'
+import type { UseGame } from '@/types'
 
 const activeCard = ref<Card | null>(null)
 

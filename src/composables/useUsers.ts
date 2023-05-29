@@ -1,11 +1,7 @@
-import { ref, Ref } from 'vue'
+import { ref } from 'vue'
 import { StorageKey, User } from '@/types'
 import { useLocalStorage } from '@/composables/useLocalStorage'
-
-interface UseUsers {
-  user: Ref<User | null>
-  setUser: (username: User) => void;
-}
+import type { UseUsers } from '@/types'
 
 const user = ref<User | null>(null)
 

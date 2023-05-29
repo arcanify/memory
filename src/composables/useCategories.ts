@@ -1,12 +1,7 @@
-import { ref, Ref } from 'vue'
+import { ref } from 'vue'
 import { Category, StorageKey } from '@/types'
 import { useLocalStorage } from '@/composables/useLocalStorage'
-
-interface UseCategories {
-  categories: Ref<Category[] | null>
-  selectedCategory: Ref<Category | null>
-  setSelectedCategory: (category: Category) => void
-}
+import type { UseCategories } from '@/types'
 
 const categories = ref<Category[] | null>(null)
 const selectedCategory = ref<Category | null>(null)
