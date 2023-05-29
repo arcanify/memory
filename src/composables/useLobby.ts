@@ -7,22 +7,22 @@ import {
   update,
   onValue,
   remove,
-  increment
+  increment,
 } from 'firebase/database'
 import { ref } from 'vue'
 import { Card, Lobby } from '@/types'
-import type { UseLobbyInterface } from '@/types'
+import type { UseLobby } from '@/types'
 
 const lobby = ref<Lobby | null>(null)
 const isLobbyReady = ref<boolean>(false)
 
-export const useLobby = (): UseLobbyInterface => {
+export const useLobby = (): UseLobby => {
   const listenLobby = (lobbyId: string): void => {
     const lobbyRef = firebaseRef(rtdb, `lobby/${lobbyId}`)
     onValue(lobbyRef, (snapshot) => {
       const data = snapshot.val() as Lobby
-      
-      if(!data) return
+
+      if (!data) return
       lobby.value = data
 
       if (data.players.player1 && data.players.player2) {
@@ -35,19 +35,19 @@ export const useLobby = (): UseLobbyInterface => {
       const cards = ref<Card[]>([])
       cards.value = snapshot.val() as Card[]
 
-      if(!cards.value) return
-      
+      if (!cards.value) return
+
       const cardsStates = [] as boolean[]
       const isFlipped = (cardFlipState: boolean): boolean => {
         return cardFlipState
       }
 
-      cards.value.forEach(card => {
+      cards.value.forEach((card) => {
         cardsStates.push(card.isFlipped)
       })
 
       update(child(firebaseRef(rtdb), `lobby/${lobbyId}`), {
-        isGameFinished: cardsStates.every(isFlipped)
+        isGameFinished: cardsStates.every(isFlipped),
       })
     })
   }
@@ -78,12 +78,12 @@ export const useLobby = (): UseLobbyInterface => {
     set(firebaseRef(rtdb, `lobby/${lobbyId}`), {
       ID: lobbyId,
       category,
-      players: {player1: creator},
+      players: { player1: creator },
       score: { player1: 0, player2: 0 },
       cards,
       activeCard,
       turn: creator,
-      isGameFinished: false
+      isGameFinished: false,
     })
   }
 
@@ -98,16 +98,16 @@ export const useLobby = (): UseLobbyInterface => {
   }
 
   const addPoint = (lobbyId: string, player: string): void => {
-    if(!lobby.value) return
-    if(player === lobby.value.players.player1) {
-        update(child(firebaseRef(rtdb), `lobby/${lobbyId}/score`), {
-          player1: increment(1),
-        })
-      } else {
-        update(child(firebaseRef(rtdb), `lobby/${lobbyId}/score`), {
-          player2: increment(1),
-        })
-      }
+    if (!lobby.value) return
+    if (player === lobby.value.players.player1) {
+      update(child(firebaseRef(rtdb), `lobby/${lobbyId}/score`), {
+        player1: increment(1),
+      })
+    } else {
+      update(child(firebaseRef(rtdb), `lobby/${lobbyId}/score`), {
+        player2: increment(1),
+      })
+    }
   }
 
   return {
@@ -118,6 +118,6 @@ export const useLobby = (): UseLobbyInterface => {
     startLobby,
     joinLobby,
     removeLobby,
-    addPoint
+    addPoint,
   }
 }

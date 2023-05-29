@@ -3,11 +3,12 @@ import { useLobby } from '@/composables/useLobby'
 import { Views } from '@/types'
 import { Ref, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { delay } from '@/helpers'
 
 const { lobby, isLobbyReady } = useLobby()
 const router = useRouter()
 
-const result = ref<string>('')
+const result = ref<string | null>(null)
 
 const endGame = async (): Promise<void> => {
   localStorage.clear()
@@ -18,13 +19,20 @@ const endGame = async (): Promise<void> => {
   })
 }
 
-const resultCheck = (): Ref<string | null> => {
-    if (lobby.value && lobby.value.score.player1 !== lobby.value.score.player2) {
-      if(lobby.value.score)
-      result.value = lobby.value.score.player1 > lobby.value.score.player2 ? lobby.value.players.player1 as string : lobby.value.players.player2 as string
-    } else {
-      result.value = 'draw'
-    } 
+const resultCheck = async(): Promise<Ref<string | null>> => {
+  const overlay = document.querySelector('.overlay')
+  overlay?.classList.remove('hidden')
+
+  await delay(10)
+
+  if (lobby.value && lobby.value.score.player1 !== lobby.value.score.player2) {
+    result.value =
+      lobby.value.score.player1 > lobby.value.score.player2
+        ? (lobby.value.players.player1)
+        : (lobby.value.players.player2)
+  } else {
+    result.value = 'draw'
+  }
   return result
 }
 resultCheck()
@@ -43,7 +51,7 @@ resultCheck()
             v-if="lobby"
             class="text-2xl font-bold p-2 text-[var(--main)]"
           >
-            {{ result === "DRAW" ? $t('draw') : $t('winner') }}
+            {{ result === 'draw' ? $t('draw') : $t('winner') }}
           </h2>
           <h3
             v-if="result !== 'draw'"

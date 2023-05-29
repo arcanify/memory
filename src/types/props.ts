@@ -1,40 +1,40 @@
 import { Card, Category, Lobby, StorageKey, User } from '@/types'
 import { Ref } from 'vue'
 
-export interface CategoryCardInterface {
+export interface CategoryCard {
   category: Category
 }
 
-export interface GameCardInterface {
+export interface GameCard {
   card: Card
 }
 
-export interface UseApiClientInterface {
+export interface UseApiClient {
   createUser: (user: string) => Promise<void>
   getCategoryCards: (categoryKey: string) => Promise<void>
   getAllCategories: () => Promise<Category[] | null>
 }
 
-export interface UseCardsInterface {
+export interface UseCards {
   cards: Ref<Card[]>
   shuffledCards: Ref<Card[]>
   setCards: (value: Card[]) => void
 }
 
-export interface UseCategoriesInterface {
+export interface UseCategories {
   categories: Ref<Category[] | null>
   selectedCategory: Ref<Category | null>
   setSelectedCategory: (category: Category) => void
 }
 
-export interface UseGameInterface {
+export interface UseGame {
   activeCard: Ref<Card | null>
   flipCard: (card: number, action: boolean) => void
   setActiveCard: (card: Card | null) => void
   setActivePlayer: (player: string) => void
 }
 
-export interface UseLobbyInterface {
+export interface UseLobby {
   lobby: Ref<Lobby | null>
   isLobbyReady: Ref<boolean>
   listenLobby: (lobbyId: string) => void
@@ -45,17 +45,17 @@ export interface UseLobbyInterface {
   addPoint: (lobbyId: string, player: string) => void
 }
 
-export interface UseLocalStorageInterface {
+export interface UseLocalStorage {
   setItem: <T>(key: StorageKey, data: T) => void
   getItem: <T>(key: StorageKey) => T | null
 }
 
-export interface UseUsersInterface {
+export interface UseUsers {
   user: Ref<User | null>
   setUser: (username: User) => void;
 }
 
-export interface UseGameInterface {
+export interface UseGame {
   activeCard: Ref<Card | null>
   flipCard: (card: number, action: boolean) => void
   setActiveCard: (card: Card | null) => void

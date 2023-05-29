@@ -28,9 +28,7 @@ onBeforeMount(async () => {
   await getLobby(routeId)
   listenLobby(routeId)
 
-  // Jeśli lobby już istnieje to
   if (lobby.value) {
-    // Jeśli lobby nie jest gotowe to przekieruj użytkownika, jeśli jest to póki co nic
     if (!isLobbyReady.value) {
       router.push({
         name: Views.HOME,

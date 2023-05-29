@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { GameCardInterface } from '@/types'
+import type { GameCard } from '@/types'
 
-defineProps<GameCardInterface>()
+defineProps<GameCard>()
 </script>
 
 <template>

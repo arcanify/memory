@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { CategoryCardInterface } from '@/types'
+import type { CategoryCard } from '@/types'
 
-defineProps<CategoryCardInterface>()
+defineProps<CategoryCard>()
 </script>
 
 <template>

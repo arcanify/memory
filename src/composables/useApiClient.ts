@@ -5,12 +5,12 @@ import { collection,where, query, getDocs } from 'firebase/firestore'
 import { useUsers } from '@/composables/useUsers'
 import { useCards } from '@/composables/useCards'
 import { useLobby } from '@/composables/useLobby'
-import type { UseApiClientInterface } from '@/types'
+import type { UseApiClient } from '@/types'
 
 const { setUser } = useUsers()
 const { setCards } = useCards()
 
-export const useApiClient = (): UseApiClientInterface => {
+export const useApiClient = (): UseApiClient => {
   const router = useRouter()
   const { lobby, joinLobby } = useLobby()
 

@@ -38,8 +38,6 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
     addPoint(lobby.value.ID, lobby.value.turn)
 
     if (lobby.value.isGameFinished) {
-      const overlay = document.querySelector('.overlay')
-      overlay?.classList.remove('hidden')
       await delay(1000)
       removeLobby(lobby.value.ID)
     }
@@ -78,12 +76,8 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
       />
     </div>
   </div>
-  <Transition
-    name="fade"
-  >
-    <EndGameWindow 
-      v-if="lobby?.isGameFinished" 
-    />
+  <Transition name="fade">
+    <EndGameWindow v-if="lobby?.isGameFinished" />
   </Transition>
 </template>
 
@@ -101,7 +95,7 @@ const clickCard = async (card: Card, index: number): Promise<void> => {
 }
 
 .overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
