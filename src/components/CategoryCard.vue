@@ -6,7 +6,7 @@ defineProps<CategoryCard>()
 
 <template>
   <div
-    class="relative transition-all duration-200 cursor-pointer lg:filter lg:grayscale-[60%] hover:grayscale-0"
+    class="relative transition-all duration-200 cursor-pointer filter grayscale-[60%] hover:grayscale-0"
   >
     <img
       class="rounded-md object-cover h-48 w-96"
