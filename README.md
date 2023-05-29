@@ -26,8 +26,9 @@ width="100%" hspace="10" vspace="10">
 
 ---
 
-<img src="/public/readme/Mobile.png"
-width="100%" hspace="10" vspace="10">
+<p align="center" width="100%">
+    <img width="33%" src="/public/readme/Mobile.png"> 
+</p>
 
 ---
 
