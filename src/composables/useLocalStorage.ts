@@ -1,9 +1,5 @@
 import { StorageKey } from '@/types'
-
-interface UseLocalStorage {
-  setItem: <T>(key: StorageKey, data: T) => void
-  getItem: <T>(key: StorageKey) => T | null
-}
+import type { UseLocalStorage } from '@/types'
 
 export const useLocalStorage = (): UseLocalStorage => {
   const setItem = <T>(key: StorageKey, data: T): void => {

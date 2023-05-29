@@ -1,2 +1,3 @@
 export * from './delay'
-export * from './shuffleArray'
+export * from './shuffleCards'
+export * from './doubleCards'

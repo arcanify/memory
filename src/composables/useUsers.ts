@@ -1,34 +1,20 @@
-import { ref, Ref } from 'vue'
-import { GameUsers, StorageKey, User } from '@/types'
+import { ref } from 'vue'
+import { StorageKey, User } from '@/types'
 import { useLocalStorage } from '@/composables/useLocalStorage'
+import type { UseUsers } from '@/types'
 
-interface UseUsers {
-  users: Ref<GameUsers>
-  currentUser: Ref<User | null>
-  opponentUser: Ref<User | null>
-  setUser: (username: User) => void;
-}
-
-const currentUser = ref<User | null>(null)
-const opponentUser = ref<User | null>(null) 
+const user = ref<User | null>(null)
 
 export const useUsers = (): UseUsers => {
   const { setItem } = useLocalStorage()
-  
-  const users = ref<GameUsers>({
-    user: currentUser.value,
-    opponent: opponentUser.value,
-  })
 
   const setUser = (username: User): void => {
-    currentUser.value = username
-    setItem<User>(StorageKey.USER, currentUser.value)
+    user.value = username
+    setItem<User>(StorageKey.USER, user.value)
   }
 
   return {
-    users,
-    currentUser,
-    opponentUser,
+    user,
     setUser
   }
 }
